@@ -324,8 +324,7 @@
           );
         }
 
-        const root = RoyalReactDOM.createRoot(document.getElementById('root'));
-        // Fallback standard render handling for plain environment context script injects
+        // Clean React 18 Initialization
         const container = document.getElementById('root');
         const reactRoot = ReactDOM.createRoot(container);
         reactRoot.render(<App />);
