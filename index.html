@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANTUM_TASK_HUD</title>
+    <!-- Load React, ReactDOM, and Babel natively for instant deployment -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Ultimate High-Grade Operations UI Design Layer
+        const tacticalStyles = `
+          @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700;800&display=swap');
+          
+          body { 
+            margin: 0; 
+            background: #030712; 
+            color: #00ffcc; 
+            font-family: 'JetBrains Mono', monospace;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+          }
+          
+          .hud-frame { max-width: 1400px; margin: 0 auto; padding: 24px; }
+          
+          .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #00ffcc33;
+            background: linear-gradient(90deg, #0f172a 0%, #020617 100%);
+            padding: 16px 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.05);
+          }
+          .hud-title { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: 2px; display: flex; align-items: center; gap: 12px; }
+          .pulse-indicator { width: 8px; height: 8px; background: #00ffcc; border-radius: 50%; box-shadow: 0 0 10px #00ffcc; animation: terminalPulse 1.5s infinite; }
+          
+          .dashboard-grid { display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
+          @media (max-width: 1024px) { .dashboard-grid { grid-template-columns: 1fr; } }
+          
+          .telemetry-sidebar { display: flex; flex-direction: column; gap: 24px; }
+          .panel-box { 
+            background: #090f1e; 
+            border: 1px solid rgba(0, 255, 204, 0.15); 
+            border-radius: 8px; 
+            padding: 24px; 
+            position: relative;
+            overflow: hidden;
+          }
+          .panel-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #00ffcc, transparent); }
+          .panel-title { font-size: 12px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; display: flex; justify-content: space-between; }
+          
+          .chart-wrapper { display: flex; justify-content: center; align-items: center; margin: 16px 0; position: relative; }
+          .chart-label { position: absolute; text-align: center; }
+          .chart-pct { font-size: 28px; font-weight: 800; color: #fff; font-family: 'Space Grotesk', sans-serif; }
+          .chart-sub { font-size: 9px; color: #00ffccaa; text-transform: uppercase; }
+          
+          .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed rgba(0, 255, 204, 0.1); font-size: 12px; }
+          .stat-row:last-child { border: none; }
+          .stat-val { color: #fff; font-weight: 700; }
+          
+          .main-pipeline { display: flex; flex-direction: column; gap: 24px; }
+          .filter-bar { display: flex; justify-content: space-between; align-items: center; background: #090f1e; border: 1px solid rgba(0, 255, 204, 0.1); padding: 8px; border-radius: 6px; }
+          .tab-group { display: flex; gap: 4px; }
+          .hud-tab { background: transparent; border: none; color: #4b5563; padding: 8px 16px; font-size: 11px; font-weight: 700; cursor: pointer; border-radius: 4px; font-family: inherit; transition: all 0.2s; }
+          .hud-tab.active { background: rgba(0, 255, 204, 0.1); color: #00ffcc; border: 1px solid rgba(0, 255, 204, 0.2); }
+          
+          .op-card {
+            background: linear-gradient(145deg, #0b1528 0%, #070b14 100%);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #4b5563;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+          }
+          .op-card:hover { border-color: #00ffcc44; transform: translateX(4px); box-shadow: 0 0 15px rgba(0, 255, 204, 0.02); }
+          .op-card.prio-High { border-left-color: #f87171; }
+          .op-card.prio-Medium { border-left-color: #fbbf24; }
+          .op-card.prio-Low { border-left-color: #34d399; }
+          
+          .node-core { display: flex; gap: 18px; align-items: flex-start; width: 75%; }
+          .hud-checkbox { width: 18px; height: 18px; border: 2px solid #374151; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-top: 2px; transition: all 0.2s; background: transparent; flex-shrink: 0; }
+          .hud-checkbox.checked { background: #00ffcc; border-color: #00ffcc; box-shadow: 0 0 10px #00ffcc; }
+          
+          .node-title { font-size: 15px; font-weight: 700; color: #f3f4f6; transition: all 0.2s; }
+          .node-desc { margin: 6px 0 12px 0; color: #94a3b8; font-size: 12px; line-height: 1.6; font-family: sans-serif; }
+          .node-tags { display: flex; gap: 12px; font-size: 10px; }
+          
+          .hud-btn { background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); color: #00ffcc; padding: 8px 14px; font-size: 11px; font-weight: 700; cursor: pointer; border-radius: 4px; font-family: inherit; transition: all 0.2s; }
+          .hud-btn:hover { background: #00ffcc; color: #030712; box-shadow: 0 0 12px #00ffcc; }
+          .btn-kill { color: #f87171; border-color: rgba(248, 113, 113, 0.2); }
+          .btn-kill:hover { background: rgba(248, 113, 113, 0.15); color: #f87171; box-shadow: 0 0 12px rgba(248, 113, 113, 0.3); }
+          .btn-primary { background: #00ffcc; color: #030712; font-weight: 800; border: none; padding: 10px 16px; }
+          
+          .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 999; }
+          .modal-box { background: #090f1e; border: 1px solid #00ffcc; box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); padding: 32px; border-radius: 8px; width: 100%; max-width: 460px; position: relative; }
+          .hud-input { width: 100%; padding: 12px; background: #030712; border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 4px; color: #fff; font-family: inherit; font-size: 12px; box-sizing: border-box; margin-top: 6px; }
+          .hud-input:focus { outline: none; border-color: #00ffcc; box-shadow: 0 0 8px rgba(0, 255, 204, 0.3); }
+        
+          @keyframes terminalPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        `;
+
+        function App() {
+          const [tasks, setTasks] = React.useState(() => {
+            const data = localStorage.getItem('tactical_ops_matrix');
+            return data ? JSON.parse(data) : [
+              { id: 'op-1', title: 'Execute Mainframe Infrastructure Setup', description: 'Deconstruct data model constraints and implement low-overhead visual state streams.', dueDate: '2026-06-08', priority: 'High', status: 'PENDING' },
+              { id: 'op-2', title: 'Verify Diagnostic Metrics Core', description: 'Map SVG execution arrays to render active user pipeline analytics in real time.', dueDate: '2026-06-12', priority: 'Medium', status: 'COMPLETED' }
+            ];
+          });
+
+          const [filter, setFilter] = React.useState('ALL');
+          const [modalOpen, setModalOpen] = React.useState(false);
+          const [editingId, setEditingId] = React.useState(null);
+
+          const [title, setTitle] = React.useState('');
+          const [description, setDescription] = React.useState('');
+          const [dueDate, setDueDate] = React.useState('');
+          const [priority, setPriority] = React.useState('Medium');
+
+          React.useEffect(() => {
+            localStorage.setItem('tactical_ops_matrix', JSON.stringify(tasks));
+          }, [tasks]);
+
+          const total = tasks.length;
+          const completed = tasks.filter(t => t.status === 'COMPLETED').length;
+          const pending = tasks.filter(t => t.status === 'PENDING').length;
+          const overdue = tasks.filter(t => t.status === 'PENDING' && t.dueDate && new Date(t.dueDate) < new Date(new Date().setHours(0,0,0,0))).length;
+
+          const completionPercentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+          const radius = 50;
+          const circumference = 2 * Math.PI * radius;
+          const strokeDashoffset = circumference - (completionPercentage / 100) * circumference;
+
+          const handleOpenModal = (target = null) => {
+            if (target) {
+              setEditingId(target.id);
+              setTitle(target.title);
+              setDescription(target.description);
+              setDueDate(target.dueDate);
+              setPriority(target.priority);
+            } else {
+              setEditingId(null);
+              setTitle('');
+              setDescription('');
+              setDueDate('');
+              setPriority('Medium');
+            }
+            setModalOpen(true);
+          };
+
+          const handleSave = (e) => {
+            e.preventDefault();
+            if (!title.trim()) return;
+
+            if (editingId) {
+              setTasks(tasks.map(t => t.id === editingId ? { ...t, title, description, dueDate, priority } : t));
+            } else {
+              const freshTask = {
+                id: 'sys-' + Math.random().toString(36).substring(2, 7),
+                title,
+                description,
+                dueDate,
+                priority,
+                status: 'PENDING'
+              };
+              setTasks([...tasks, freshTask]);
+            }
+            setModalOpen(false);
+          };
+
+          return (
+            <div className="hud-frame">
+              <style>{tacticalStyles}</style>
+
+              <header className="hud-header">
+                <div className="hud-title">
+                  <span className="pulse-indicator"></span>
+                  QUANTUM_TASK_HUD // SECURE_NODE_ONLINE
+                </div>
+                <button className="hud-btn btn-primary" onClick={() => handleOpenModal()}>[+] ALLOCATE_NODE</button>
+              </header>
+
+              <div className="dashboard-grid">
+                <aside className="telemetry-sidebar">
+                  <div className="panel-box">
+                    <div className="panel-title"><span>// DATA_TELEMETRY</span><span>SYS_OK</span></div>
+                    <div className="chart-wrapper">
+                      <svg width="140" height="140" viewBox="0 0 120 120" style={{ transform: 'rotate(-90deg)' }}>
+                        <circle cx="60" cy="60" r={radius} fill="transparent" stroke="rgba(0, 255, 204, 0.05)" strokeWidth="8" />
+                        <circle 
+                          cx="60" 
+                          cy="60" 
+                          r={radius} 
+                          fill="transparent" 
+                          stroke="#00ffcc" 
+                          strokeWidth="8" 
+                          strokeDasharray={circumference}
+                          strokeDashoffset={strokeDashoffset}
+                          strokeLinecap="round"
+                          style={{ transition: 'stroke-dashoffset 0.4s ease' }}
+                        />
+                      </svg>
+                      <div className="chart-label">
+                        <div className="chart-pct">{completionPercentage}%</div>
+                        <div className="chart-sub">RESOLVED</div>
+                      </div>
+                    </div>
+                    <div style={{ marginTop: '16px' }}>
+                      <div className="stat-row"><span>ALLOCATED THREADS:</span><span className="stat-val">{total}</span></div>
+                      <div className="stat-row"><span>OPERATIONAL NODES:</span><span className="stat-val" style={{ color: '#34d399' }}>{completed}</span></div>
+                      <div className="stat-row"><span>ACTIVE SEQUENCE:</span><span className="stat-val" style={{ color: '#fbbf24' }}>{pending}</span></div>
+                      <div className="stat-row"><span>BREACHED LIMITS:</span><span className="stat-val" style={{ color: '#f87171' }}>{overdue}</span></div>
+                    </div>
+                  </div>
+
+                  <div className="panel-box" style={{ flexGrow: 1 }}>
+                    <div className="panel-title"><span>// KERNEL_STREAM_LOGS</span><span>LIVE</span></div>
+                    <div style={{ fontSize: '11px', color: '#4b5563', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div>[04:22:15] <span style={{ color: '#94a3b8' }}>SYS_INIT</span> Local storage synchronization verified.</div>
+                      <div>[04:24:02] <span style={{ color: '#94a3b8' }}>METRIC_GEN</span> Chart sequence computed seamlessly.</div>
+                      <div>[04:26:18] <span style={{ color: '#00ffcc' }}>STREAM_OK</span> Listening for user structural deployment...</div>
+                    </div>
+                  </div>
+                </aside>
+
+                <main className="main-pipeline">
+                  <div className="filter-bar">
+                    <div className="tab-group">
+                      {['ALL', 'PENDING', 'COMPLETED'].map(mode => (
+                        <button key={mode} className={`hud-tab ${filter === mode ? 'active' : ''}`} onClick={() => setFilter(mode)}>
+                          {mode}
+                        </button>
+                      ))}
+                    </div>
+                    <span style={{ fontSize: '10px', color: '#4b5563', paddingRight: '12px' }}>SEGMENT_COUNT: {tasks.filter(t => filter === 'ALL' || t.status === filter).length}</span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {tasks.filter(t => filter === 'ALL' || t.status === filter).length === 0 ? (
+                      <div style={{ padding: '64px', textAlign: 'center', background: '#090f1e', borderRadius: '8px', border: '1px dashed rgba(0,255,204,0.15)', color: '#4b5563', fontSize: '12px' }}>
+                        // SECTION MATRIX EMPTY. NO OPERATIONS RUNNING.
+                      </div>
+                    ) : (
+                      tasks.filter(t => filter === 'ALL' || t.status === filter).map(task => (
+                        <div key={task.id} className={`op-card prio-${task.priority}`} style={{ opacity: task.status === 'COMPLETED' ? 0.35 : 1 }}>
+                          <div className="node-core">
+                            <div className={`hud-checkbox ${task.status === 'COMPLETED' ? 'checked' : ''}`} onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: t.status === 'PENDING' ? 'COMPLETED' : 'PENDING' } : t))}>
+                              {task.status === 'COMPLETED' && <span style={{ color: '#030712', fontSize: '10px', fontWeight: 900 }}>✓</span>}
+                            </div>
+                            <div>
+                              <div className="node-title" style={{ textDecoration: task.status === 'COMPLETED' ? 'line-through' : 'none' }}>
+                                {task.title}
+                              </div>
+                              {task.description && <p className="node-desc">{task.description}</p>}
+                              <div className="node-tags">
+                                <span style={{ color: task.priority === 'High' ? '#f87171' : task.priority === 'Medium' ? '#fbbf24' : '#34d399', fontWeight: 700 }}>
+                                  [{task.priority.toUpperCase()}_STAGE]
+                                </span>
+                                {task.dueDate && <span style={{ color: '#4b5563' }}>// LIMIT_INDEX: {task.dueDate}</span>}
+                              </div>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <button className="hud-btn" onClick={() => handleOpenModal(task)}>RECONFIG</button>
+                            <button className="hud-btn btn-kill" onClick={() => setTasks(tasks.filter(t => t.id !== task.id))}>PURGE</button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </main>
+              </div>
+
+              {modalOpen && (
+                <div className="modal-overlay">
+                  <div className="modal-box">
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: '#00ffcc', marginBottom: '24px', letterSpacing: '1px' }}>
+                      {editingId ? '>> RECONFIGURING_MATRIX_NODE' : '>> INITIATING_NEW_MATRIX_NODE'}
+                    </div>
+                    <form onSubmit={handleSave}>
+                      <div style={{ marginBottom: '16px' }}>
+                        <label style={{ fontSize: '10px', color: '#64748b' }}>NODE IDENTIFICATION *</label>
+                        <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Target sequence tag..." className="hud-input" />
+                      </div>
+                      <div style={{ marginBottom: '16px' }}>
+                        <label style={{ fontSize: '10px', color: '#64748b' }}>METADATA STREAM SPECIFICATION</label>
+                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Context parameters..." className="hud-input" />
+                      </div>
+                      <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+                        <div style={{ flex: 1 }}>
+                          <label style={{ fontSize: '10px', color: '#64748b' }}>TARGET LIMIT TIMESTAMP</label>
+                          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="hud-input" />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <label style={{ fontSize: '10px', color: '#64748b' }}>CRITICALITY FACTOR</label>
+                          <select value={priority} onChange={(e) => setPriority(e.target.value)} className="hud-input">
+                            <option value="Low">Low Stage</option>
+                            <option value="Medium">Medium Stage</option>
+                            <option value="High">High Stage</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', gap: '12px', borderTop: '1px solid rgba(0, 255, 204, 0.15)', paddingTop: '16px', justifyContent: 'flex-end' }}>
+                        <button type="button" className="hud-btn" onClick={() => setModalOpen(false)}>ABORT</button>
+                        <button type="submit" className="hud-btn btn-primary">COMMIT TO STREAM</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        const root = RoyalReactDOM.createRoot(document.getElementById('root'));
+        // Fallback standard render handling for plain environment context script injects
+        const container = document.getElementById('root');
+        const reactRoot = ReactDOM.createRoot(container);
+        reactRoot.render(<App />);
+    </script>
+</body>
+</html>
