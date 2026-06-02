@@ -1,529 +1,334 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CORE_STREAM_TRACKER // Enterprise UX</title>
-<script src="https://cdnjs.cloudflare.com/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone@7.23.3/babel.min.js"></script>
-<body>
+<script type="text/babel">
+    // Fixed UI Style Engine - String Safe
+    const globalStyles = `
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700;800&display=swap');
+      
+      :root {
+        --bg-main: #030712;
+        --bg-panel: #090f1e;
+        --accent: #00ffcc;
+        --accent-dim: rgba(0, 255, 204, 0.15);
+        --text-muted: #94a3b8;
+        --text-dark: #4b5563;
+        --border-glow: rgba(0, 255, 204, 0.2);
+      }
 
-    <div id="root"></div>
+      body { 
+        margin: 0; 
+        background: #030712; 
+        color: #00ffcc; 
+        font-family: 'JetBrains Mono', monospace;
+      }
 
-    <script type="text/babel">
-        // Global High-Grade UI Design Engine
-        const globalStyles = `
-          @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700;800&display=swap');
-          
-          :root {
-            --bg-main: #030712;
-            --bg-panel: #090f1e;
-            --accent: #00ffcc;
-            --accent-dim: rgba(0, 255, 204, 0.15);
-            --text-muted: #94a3b8;
-            --text-dark: #4b5563;
-            --border-glow: rgba(0, 255, 204, 0.2);
-          }
+      .landing-wrapper {
+        font-family: 'Space Grotesk', sans-serif;
+        color: #fff;
+        min-height: 100vh;
+        background: #030712;
+      }
+      .landing-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 8%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .brand-logo {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 800;
+        color: #00ffcc;
+        letter-spacing: 1px;
+      }
+      .hero-section {
+        text-align: center;
+        padding: 100px 20px 60px 20px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .hero-tag {
+        font-family: 'JetBrains Mono', monospace;
+        color: #00ffcc;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 16px;
+      }
+      .hero-title {
+        font-size: 56px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin: 0 0 24px 0;
+        color: #ffffff;
+      }
+      .hero-desc {
+        color: #94a3b8;
+        font-size: 18px;
+        max-width: 600px;
+        margin: 0 auto 40px auto;
+      }
+      .landing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        padding: 40px 8%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .feature-card {
+        background: #090f1e;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 32px;
+      }
+      .feature-icon {
+        color: #00ffcc;
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+      .feature-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 12px 0;
+      }
+      .feature-desc {
+        color: #94a3b8;
+        font-size: 14px;
+        line-height: 1.5;
+      }
 
-          body { 
-            margin: 0; 
-            background: var(--bg-main); 
-            color: var(--accent); 
-            font-family: 'JetBrains Mono', monospace;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-          }
+      .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .auth-card {
+        background: #090f1e;
+        border: 1px solid rgba(0, 255, 204, 0.15);
+        border-radius: 12px;
+        width: 100%;
+        max-width: 420px;
+        padding: 40px;
+      }
 
-          /* Landing Page Layout Styles */
-          .landing-wrapper {
-            font-family: 'Space Grotesk', sans-serif;
-            color: #fff;
-            min-height: 100vh;
-            background: radial-gradient(circle at top right, rgba(0, 255, 204, 0.05), transparent 600px), #030712;
-          }
-          .landing-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px 8%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-          }
-          .brand-logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
-            color: var(--accent);
-            letter-spacing: 1px;
-          }
-          .hero-section {
-            text-align: center;
-            padding: 100px 20px 60px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-          }
-          .hero-tag {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent);
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 16px;
-          }
-          .hero-title {
-            font-size: 56px;
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin: 0 0 24px 0;
-            background: linear-gradient(180deg, #fff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-          }
-          .hero-desc {
-            color: var(--text-muted);
-            font-size: 18px;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-          }
-          .landing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            padding: 40px 8%;
-            max-width: 1200px;
-            margin: 0 auto;
-          }
-          .feature-card {
-            background: var(--bg-panel);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 32px;
-            transition: all 0.3s ease;
-          }
-          .feature-card:hover {
-            border-color: var(--accent-dim);
-            transform: translateY(-4px);
-          }
-          .feature-icon {
-            color: var(--accent);
-            font-size: 24px;
-            margin-bottom: 16px;
-            font-family: 'JetBrains Mono', monospace;
-          }
-          .feature-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0 0 12px 0;
-          }
-          .feature-desc {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.5;
-            margin: 0;
-          }
+      .hud-btn { 
+        background: rgba(0, 255, 204, 0.15); 
+        border: 1px solid rgba(0, 255, 204, 0.2); 
+        color: #00ffcc; 
+        padding: 10px 20px; 
+        font-size: 12px; 
+        font-weight: 700; 
+        cursor: pointer; 
+        border-radius: 6px; 
+        font-family: 'JetBrains Mono', monospace; 
+      }
+      .hud-btn:hover { background: #00ffcc; color: #030712; }
+      .btn-primary { background: #00ffcc; color: #030712; border: none; font-weight: 800; }
+      .btn-text { background: transparent; border: none; color: #94a3b8; cursor: pointer; text-decoration: underline; }
+      
+      .hud-input { 
+        width: 100%; 
+        padding: 12px; 
+        background: #030712; 
+        border: 1px solid rgba(0, 255, 204, 0.2); 
+        border-radius: 6px; 
+        color: #fff; 
+        box-sizing: border-box; 
+        margin-top: 6px; 
+      }
 
-          /* Auth Page Layout Styles */
-          .auth-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-          }
-          .auth-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--accent-dim);
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.05);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
-            position: relative;
-          }
-          .auth-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); border-radius: 12px 12px 0 0; }
+      .dashboard-container { display: flex; min-height: 100vh; }
+      .nav-drawer {
+        width: 260px;
+        background: #090f1e;
+        border-right: 1px solid rgba(0, 255, 204, 0.2);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px 16px;
+      }
+      .drawer-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 40px; }
+      .drawer-item {
+        padding: 12px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #94a3b8;
+        font-size: 13px;
+      }
+      .drawer-item.active, .drawer-item:hover {
+        background: rgba(0, 255, 204, 0.05);
+        color: #00ffcc;
+      }
+      .main-content { flex-grow: 1; padding: 32px; box-sizing: border-box; }
+      
+      .progress-bar-container { background: rgba(255,255,255,0.05); border-radius: 4px; height: 6px; width: 100%; margin-top: 8px; }
+      .progress-bar-fill { background: #00ffcc; height: 100%; }
 
-          /* Interactive Components & Global Tokens */
-          .hud-btn { 
-            background: var(--accent-dim); 
-            border: 1px solid var(--border-glow); 
-            color: var(--accent); 
-            padding: 10px 20px; 
-            font-size: 12px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-family: 'JetBrains Mono', monospace; 
-            transition: all 0.2s; 
-          }
-          .hud-btn:hover { background: var(--accent); color: var(--bg-main); box-shadow: 0 0 12px var(--accent); }
-          .btn-primary { background: var(--accent); color: var(--bg-main); border: none; font-weight: 800; }
-          .btn-text { background: transparent; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 12px; }
-          .btn-text:hover { color: var(--accent); }
-          
-          .hud-input { 
-            width: 100%; 
-            padding: 12px; 
-            background: var(--bg-main); 
-            border: 1px solid var(--border-glow); 
-            border-radius: 6px; 
-            color: #fff; 
-            font-family: inherit; 
-            font-size: 13px; 
-            box-sizing: border-box; 
-            margin-top: 6px; 
-          }
-          .hud-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 8px rgba(0, 255, 204, 0.3); }
+      .alert-banner { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); color: #f87171; padding: 12px; border-radius: 6px; text-align: center; margin-bottom: 16px; }
+      .hud-header { display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0, 255, 204, 0.2); background: #0f172a; padding: 16px 24px; border-radius: 8px; margin-bottom: 24px; }
+      .dashboard-grid { display: grid; grid-template-columns: 340px 1fr; gap: 24px; }
+      .panel-box { background: #090f1e; border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 8px; padding: 20px; }
+      .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed rgba(0,255,204,0.1); font-size: 12px; }
+      .op-card { background: #070b14; border: 1px solid rgba(255,255,255,0.03); border-left: 4px solid #4b5563; border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+      .op-card.prio-High { border-left-color: #f87171; }
+      .op-card.prio-Medium { border-left-color: #fbbf24; }
+      .op-card.prio-Low { border-left-color: #34d399; }
+      .hud-checkbox { width: 18px; height: 18px; border: 2px solid #374151; border-radius: 4px; cursor: pointer; }
+      .hud-checkbox.checked { background: #00ffcc; }
+    `;
 
-          /* Dashboard Layout with Navigation Drawer */
-          .dashboard-container {
-            display: flex;
-            min-height: 100vh;
-          }
-          .nav-drawer {
-            width: 260px;
-            background: var(--bg-panel);
-            border-right: 1px solid var(--border-glow);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 16px;
-            flex-shrink: 0;
-          }
-          .drawer-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 40px; }
-          .drawer-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-size: 13px;
-            transition: all 0.2s;
-          }
-          .drawer-item:hover, .drawer-item.active {
-            background: rgba(0, 255, 204, 0.05);
-            color: var(--accent);
-            border-left: 3px solid var(--accent);
-          }
-          .main-content { flex-grow: 1; padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box; }
-          
-          /* Mini Progress Meter Component */
-          .progress-bar-container {
-            background: rgba(255,255,255,0.05);
-            border-radius: 4px;
-            height: 6px;
-            width: 100%;
-            overflow: hidden;
-            margin-top: 8px;
-          }
-          .progress-bar-fill {
-            background: var(--accent);
-            height: 100%;
-            transition: width 0.4s ease;
-            box-shadow: 0 0 8px var(--accent);
-          }
+    function App() {
+      const [view, setView] = React.useState('LANDING');
+      const [isSignUp, setIsSignUp] = React.useState(false);
+      const [authError, setAuthError] = React.useState('');
+      const [currentUser, setCurrentUser] = React.useState(null);
+      const [dashTab, setDashTab] = React.useState('METRICS');
 
-          /* Notification Toast */
-          .alert-banner {
-            background: rgba(248, 113, 113, 0.1);
-            border: 1px solid rgba(248, 113, 113, 0.3);
-            color: #f87171;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            margin-bottom: 16px;
-            text-align: center;
-          }
+      const [username, setUsername] = React.useState('');
+      const [password, setPassword] = React.useState('');
 
-          /* Elements from Previous Dashboard Layout */
-          .hud-header { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-glow); background: #0f172a; padding: 16px 24px; border-radius: 8px; margin-bottom: 24px; }
-          .dashboard-grid { display: grid; grid-template-columns: 340px 1fr; gap: 24px; }
-          .panel-box { background: var(--bg-panel); border: 1px solid var(--border-glow); border-radius: 8px; padding: 20px; position: relative; }
-          .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed rgba(0,255,204,0.1); font-size: 12px; }
-          .op-card { background: linear-gradient(145deg, #0b1528 0%, #070b14 100%); border: 1px solid rgba(255,255,255,0.03); border-left: 4px solid #4b5563; border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-          .op-card.prio-High { border-left-color: #f87171; }
-          .op-card.prio-Medium { border-left-color: #fbbf24; }
-          .op-card.prio-Low { border-left-color: #34d399; }
-          .hud-checkbox { width: 18px; height: 18px; border: 2px solid #374151; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-          .hud-checkbox.checked { background: var(--accent); border-color: var(--accent); }
-        `;
+      const [tasks, setTasks] = React.useState(() => {
+        const data = localStorage.getItem('tactical_ops_matrix');
+        return data ? JSON.parse(data) : [
+          { id: 'op-1', title: 'Optimize Cloud Server Pipeline Sync', description: 'Address latency bottleneck inside remote deployment actions array.', dueDate: '2026-06-05', priority: 'High', status: 'PENDING' },
+          { id: 'op-2', title: 'Refactor Top-Tier Component Hierarchy', description: 'Implement unified state routing pattern for Landing and Authentication gates.', dueDate: '2026-06-10', priority: 'Medium', status: 'COMPLETED' }
+        ];
+      });
 
-        function App() {
-          // View Management Router State: 'LANDING' | 'AUTH' | 'DASHBOARD'
-          const [view, setView] = React.useState('LANDING');
-          const [isSignUp, setIsSignUp] = React.useState(false);
-          const [authError, setAuthError] = React.useState('');
-          const [currentUser, setCurrentUser] = React.useState(null);
-          const [dashTab, setDashTab] = React.useState('METRICS'); // 'METRICS' | 'ACCOMPLISHMENTS'
+      React.useEffect(() => {
+        localStorage.setItem('tactical_ops_matrix', JSON.stringify(tasks));
+      }, [tasks]);
 
-          // Form fields
-          const [username, setUsername] = React.useState('');
-          const [password, setPassword] = React.useState('');
+      const completedTasks = tasks.filter(t => t.status === 'COMPLETED');
+      const pendingTasks = tasks.filter(t => t.status === 'PENDING');
+      const progressPercentage = tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
 
-          // Core Data Management Model State
-          const [tasks, setTasks] = React.useState(() => {
-            const data = localStorage.getItem('tactical_ops_matrix');
-            return data ? JSON.parse(data) : [
-              { id: 'op-1', title: 'Optimize Cloud Server Pipeline Sync', description: 'Address latency bottleneck inside remote deployment actions array.', dueDate: '2026-06-05', priority: 'High', status: 'PENDING' },
-              { id: 'op-2', title: 'Refactor Top-Tier Component Hierarchy', description: 'Implement unified state routing pattern for Landing and Authentication gates.', dueDate: '2026-06-10', priority: 'Medium', status: 'COMPLETED' }
-            ];
-          });
+      const handleAuthSubmit = (e) => {
+        e.preventDefault();
+        setAuthError('');
 
-          React.useEffect(() => {
-            localStorage.setItem('tactical_ops_matrix', JSON.stringify(tasks));
-          }, [tasks]);
-
-          // Computed Data Arrays
-          const completedTasks = tasks.filter(t => t.status === 'COMPLETED');
-          const pendingTasks = tasks.filter(t => t.status === 'PENDING');
-          const progressPercentage = tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
-
-          // Authentication Event Sequence Execution Handles
-          const handleAuthSubmit = (e) => {
-            e.preventDefault();
-            setAuthError('');
-
-            if (!username.trim() || !password.trim()) {
-              setAuthError('SYSTEM_ERROR: Input fields cannot verify empty array values.');
-              return;
-            }
-
-            if (isSignUp) {
-              localStorage.setItem(`usr_sec_${username}`, password);
-              setCurrentUser(username);
-              setView('DASHBOARD');
-            } else {
-              const record = localStorage.getItem(`usr_sec_${username}`);
-              // Fallback default dev profile verification credential
-              if ((username === 'dev_core' && password === 'admin') || record === password) {
-                setCurrentUser(username === 'dev_core' ? 'DEVELOPER_NODE_01' : username);
-                setView('DASHBOARD');
-              } else {
-                setAuthError('SECURITY_BREACH: Invalid validation key mismatch pattern.');
-              }
-            }
-          };
-
-          const handleLogout = () => {
-            setCurrentUser(null);
-            setUsername('');
-            setPassword('');
-            setView('LANDING');
-          };
-
-          return (
-            <React.Fragment>
-              <style>{globalStyles}</style>
-
-              {/* VIEW LEVEL 01: PROFESSIONAL STRUCTURAL LANDING PAGE */}
-              {view === 'LANDING' && (
-                <div className="landing-wrapper">
-                  <nav className="landing-nav">
-                    <div className="brand-logo">// CORE_STREAM_TRACKER</div>
-                    <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>[ SYSTEM_ACCESS ]</button>
-                  </nav>
-
-                  <header className="hero-section">
-                    <div className="hero-tag">// ENTERPRISE LOGISTICS PIPELINE</div>
-                    <h1 className="hero-title">High-Throughput Task Optimization Architecture</h1>
-                    <p className="hero-desc">
-                      Streamline developer state machines, audit dynamic workflow constraints, and manage real-time structural pipelines inside a highly optimized dashboard layer.
-                    </p>
-                    <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-                      <button className="hud-btn btn-primary" onClick={() => { setIsSignUp(true); setView('AUTH'); }}>Initialize Free Node</button>
-                      <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>Authenticate Credentials</button>
-                    </div>
-                  </header>
-
-                  <section className="landing-grid">
-                    <div className="feature-card">
-                      <div className="feature-icon">[01]</div>
-                      <h3 className="feature-title">Telemetry Pipelines</h3>
-                      <p className="feature-desc">Visualize exact operational completion weights with state-driven graphical progress arrays instantly.</p>
-                    </div>
-                    <div className="feature-card">
-                      <div className="feature-icon">[02]</div>
-                      <h3 className="feature-title">Granular Criticality</h3>
-                      <p className="feature-desc">Isolate pipeline congestion issues with prioritized high, medium, and low security validation targets.</p>
-                    </div>
-                    <div className="feature-card">
-                      <div className="feature-icon">[03]</div>
-                      <h3 className="feature-title">Local Architecture</h3>
-                      <p className="feature-desc">Maintains data storage integrity using local sandboxed file arrays with zero cloud synchronization vulnerabilities.</p>
-                    </div>
-                  </section>
-                </div>
-              )}
-
-              {/* VIEW LEVEL 02: EXPLICIT CREDENTIAL SIGNUP / LOGIN GATEWAY */}
-              {view === 'AUTH' && (
-                <div className="auth-wrapper">
-                  <div className="auth-card">
-                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff', marginBottom: '8px', fontFamily: 'sans-serif' }}>
-                      {isSignUp ? 'REGISTER_NEW_NODE' : 'ESTABLISH_SECURE_SESSION'}
-                    </div>
-                    <div style={{ fontSize: '11px', color: var(--text-muted), marginBottom: '24px' }}>
-                      {isSignUp ? 'Provision local configuration access tokens.' : 'Input root kernel keys to launch pipeline telemetry dashboard.'}
-                    </div>
-
-                    {authError && <div className="alert-banner">{authError}</div>}
-
-                    <form onSubmit={handleAuthSubmit}>
-                      <div style={{ marginBottom: '16px' }}>
-                        <label style={{ fontSize: '10px', color: var(--text-muted) }}>NODE ACCESS IDENTITY (Username)</label>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="hud-input" placeholder="e.g., dev_core" />
-                      </div>
-                      <div style={{ marginBottom: '24px' }}>
-                        <label style={{ fontSize: '10px', color: var(--text-muted) }}>SECURITY AUTHPASS PHRASE (Password)</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" placeholder="••••••••" />
-                      </div>
-
-                      <button type="submit" className="hud-btn btn-primary" style={{ width: '100%', padding: '12px' }}>
-                        {isSignUp ? 'GENERATE THREAD ASSETS' : 'DECRYPT SYSTEM DATA'}
-                      </button>
-                    </form>
-
-                    <div style={{ marginTop: '24px', textAlign: 'center' }}>
-                      <button className="btn-text" onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>
-                        {isSignUp ? 'Have an existing node? Log in' : 'Need new configuration? Register'}
-                      </button>
-                    </div>
-                    <div style={{ marginTop: '16px', textAlign: 'center' }}>
-                      <button className="btn-text" style={{ color: var(--text-dark), textDecoration: 'none', fontSize: '10px' }} onClick={() => setView('LANDING')}>
-                        &larr; ABORT OPERATION AND RETURN
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* VIEW LEVEL 03: ADVANCED DYNAMIC OPERATIONS INTERFACE WITH NAVIGATION DRAWER */}
-              {view === 'DASHBOARD' && (
-                <div className="dashboard-container">
-                  {/* COMPONENT: SIDEBAR NAVIGATION DRAWER */}
-                  <aside className="nav-drawer">
-                    <div>
-                      <div style={{ fontSize: '12px', fontWeight: 800, color: '#fff', borderBottom: '1px solid rgba(0,255,204,0.1)', paddingBottom: '16px' }}>
-                        // CORE_SYS_v2.0
-                      </div>
-                      <div className="drawer-menu">
-                        <div className={`drawer-item ${dashTab === 'METRICS' ? 'active' : ''}`} onClick={() => setDashTab('METRICS')}>
-                          <span>[01]</span> ACTIVE_OPERATIONS
-                        </div>
-                        <div className={`drawer-item ${dashTab === 'ACCOMPLISHMENTS' ? 'active' : ''}`} onClick={() => setDashTab('ACCOMPLISHMENTS')}>
-                          <span>[02]</span> ACCOMPLISHMENTS ({completedTasks.length})
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div style={{ fontSize: '10px', color: var(--text-muted), marginBottom: '8px' }}>OPERATOR_NODE:</div>
-                      <div style={{ fontSize: '11px', color: '#fff', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', marginBottom: '16px' }}>
-                        {currentUser}
-                      </div>
-                      <button className="hud-btn" style={{ width: '100%' }} onClick={handleLogout}>DISCONNECT_SESSION</button>
-                    </div>
-                  </aside>
-
-                  {/* DYNAMIC VIEW MAIN CONTROLLER PANEL */}
-                  <main className="main-content">
-                    <header className="hud-header">
-                      <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff' }}>
-                        SYSTEM_STREAM_MONITOR // {dashTab === 'METRICS' ? 'CORE_METRICS' : 'ARCHIVED_SUCCESS_MATRICES'}
-                      </div>
-                      <div style={{ width: '200px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '4px' }}>
-                          <span>STREAM_RESOLved:</span><span>{progressPercentage}%</span>
-                        </div>
-                        <div className="progress-bar-container">
-                          <div className="progress-bar-fill" style={{ width: `${progressPercentage}%` }}></div>
-                        </div>
-                      </div>
-                    </header>
-
-                    {dashTab === 'METRICS' ? (
-                      <div className="dashboard-grid">
-                        <section className="telemetry-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                          <div className="panel-box">
-                            <div style={{ fontSize: '11px', fontWeight: 700, color: var(--text-muted), marginBottom: '16px' }}>// SYSTEM_VOLUME_METERS</div>
-                            <div className="stat-row"><span>ALLOCATED NODES:</span><span style={{ color: '#fff' }}>{tasks.length}</span></div>
-                            <div className="stat-row"><span>PENDING STREAM:</span><span style={{ color: '#fbbf24' }}>{pendingTasks.length}</span></div>
-                            <div className="stat-row"><span>STABLE ENGINE:</span><span style={{ color: '#34d399' }}>{completedTasks.length}</span></div>
-                          </div>
-                          
-                          <div className="panel-box">
-                            <div style={{ fontSize: '11px', fontWeight: 700, color: var(--text-muted), marginBottom: '12px' }}>// QUICK_TIP_CONFIG</div>
-                            <div style={{ fontSize: '11px', color: var(--text-muted), lineHeight: '1.4' }}>
-                              Toggle execution status markers to instantly dump items out of memory matrices and route them directly into the accomplishments vault.
-                            </div>
-                          </div>
-                        </section>
-
-                        <section className="main-pipeline">
-                          <div style={{ fontSize: '12px', fontWeight: 700, marginBottom: '16px', color: '#fff' }}>LIVE_RUNNING_OPERATIONS</div>
-                          {pendingTasks.length === 0 ? (
-                            <div style={{ padding: '48px', textAlign: 'center', background: var(--bg-panel), border: '1px dashed var(--border-glow)', borderRadius: '8px', fontSize: '11px', color: var(--text-dark) }}>
-                              // NO ACTIONS DETECTED INSIDE BUFFER STREAM QUEUE.
-                            </div>
-                          ) : (
-                            pendingTasks.map(task => (
-                              <div key={task.id} className={`op-card prio-${task.priority}`}>
-                                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                                  <div className="hud-checkbox" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'COMPLETED' } : t))}></div>
-                                  <div>
-                                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff' }}>{task.title}</div>
-                                    <div style={{ fontSize: '11px', color: var(--text-muted), marginTop: '4px' }}>{task.description}</div>
-                                  </div>
-                                </div>
-                                <div style={{ fontSize: '10px', color: task.priority === 'High' ? '#f87171' : '#fbbf24', fontWeight: 700 }}>
-                                  [{task.priority.toUpperCase()}]
-                                </div>
-                              </div>
-                            ))
-                          )}
-                        </section>
-                      </div>
-                    ) : (
-                      /* FEATURE DETECTED: ACCOMPLISHMENTS VAULT MATRIX LAYER */
-                      <section className="panel-box">
-                        <div style={{ fontSize: '13px', fontWeight: 700, color: var(--accent), marginBottom: '20px' }}>
-                          // DEPLOYED_MILESTONE_ARCHIVE
-                        </div>
-                        {completedTasks.length === 0 ? (
-                          <div style={{ padding: '64px', textAlign: 'center', color: var(--text-dark), fontSize: '12px' }}>
-                            // NO CONFIRMED RESOLUTIONS DETECTED INSIDE SYSTEM RECORD LOGS.
-                          </div>
-                        ) : (
-                          completedTasks.map(task => (
-                            <div key={task.id} className="op-card" style={{ borderLeftColor: 'var(--accent)', background: 'rgba(0, 255, 204, 0.01)', opacity: 0.85 }}>
-                              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                                <div className="hud-checkbox checked" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'PENDING' } : t))}>
-                                  <span style={{ color: var(--bg-main), fontSize: '10px', fontWeight: 900 }}>✓</span>
-                                </div>
-                                <div>
-                                  <div style={{ fontSize: '14px', fontWeight: 700, color: var(--text-muted), textDecoration: 'line-through' }}>{task.title}</div>
-                                  <div style={{ fontSize: '11px', color: var(--text-dark), marginTop: '4px' }}>Task successfully processed into persistent storage engine layers.</div>
-                                </div>
-                              </div>
-                              <span style={{ fontSize: '10px', background: 'rgba(0, 255, 204, 0.1)', color: var(--accent), padding: '4px 8px', borderRadius: '4px' }}>SUCCESS</span>
-                            </div>
-                          ))
-                        )}
-                      </section>
-                    )}
-                  </main>
-                </div>
-              )}
-            </React.Fragment>
-          );
+        if (!username.trim() || !password.trim()) {
+          setAuthError('SYSTEM_ERROR: Input fields cannot verify empty array values.');
+          return;
         }
 
-        // Clean Execution Context Engine Render Sequence Hook
-        const container = document.getElementById('root');
-        const reactRoot = ReactDOM.createRoot(container);
-        reactRoot.render(<App />);
-    </script>
-</body>
-</html>
+        if (isSignUp) {
+          localStorage.setItem('usr_sec_' + username, password);
+          setCurrentUser(username);
+          setView('DASHBOARD');
+        } else {
+          const record = localStorage.getItem('usr_sec_' + username);
+          if ((username === 'dev_core' && password === 'admin') || record === password) {
+            setCurrentUser(username === 'dev_core' ? 'DEVELOPER_NODE_01' : username);
+            setView('DASHBOARD');
+          } else {
+            setAuthError('SECURITY_BREACH: Invalid validation key mismatch pattern.');
+          }
+        }
+      };
+
+      return (
+        <React.Fragment>
+          <style>{globalStyles}</style>
+
+          {view === 'LANDING' && (
+            <div className="landing-wrapper">
+              <nav className="landing-nav">
+                <div className="brand-logo">// CORE_STREAM_TRACKER</div>
+                <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>[ SYSTEM_ACCESS ]</button>
+              </nav>
+              <header className="hero-section">
+                <div className="hero-tag">// ENTERPRISE LOGISTICS PIPELINE</div>
+                <h1 className="hero-title">High-Throughput Task Optimization Architecture</h1>
+                <p className="hero-desc">Streamline developer state machines, audit dynamic workflow constraints, and manage real-time structural pipelines inside a highly optimized dashboard layer.</p>
+                <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+                  <button className="hud-btn btn-primary" onClick={() => { setIsSignUp(true); setView('AUTH'); }}>Initialize Free Node</button>
+                  <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>Authenticate Credentials</button>
+                </div>
+              </header>
+              <section className="landing-grid">
+                <div className="feature-card"><h3>[01] Telemetry Pipelines</h3><p className="feature-desc">Visualize exact operational completion weights with state-driven graphical progress arrays instantly.</p></div>
+                <div className="feature-card"><h3>[02] Granular Criticality</h3><p className="feature-desc">Isolate pipeline congestion issues with prioritized high, medium, and low security validation targets.</p></div>
+                <div className="feature-card"><h3>[03] Local Architecture</h3><p className="feature-desc">Maintains data storage integrity using local sandboxed file arrays with zero cloud synchronization vulnerabilities.</p></div>
+              </section>
+            </div>
+          )}
+
+          {view === 'AUTH' && (
+            <div className="auth-wrapper">
+              <div className="auth-card">
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>{isSignUp ? 'REGISTER_NEW_NODE' : 'ESTABLISH_SECURE_SESSION'}</div>
+                {authError && <div className="alert-banner">{authError}</div>}
+                <form onSubmit={handleAuthSubmit}>
+                  <div style={{ marginBottom: '16px' }}><label style={{ fontSize: '10px', color: '#94a3b8' }}>NODE ACCESS IDENTITY</label><input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="hud-input" /></div>
+                  <div style={{ marginBottom: '24px' }}><label style={{ fontSize: '10px', color: '#94a3b8' }}>SECURITY AUTHPASS PHRASE</label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" /></div>
+                  <button type="submit" className="hud-btn btn-primary" style={{ width: '100%' }}>{isSignUp ? 'GENERATE THREAD ASSETS' : 'DECRYPT SYSTEM DATA'}</button>
+                </form>
+                <div style={{ marginTop: '24px', textAlign: 'center' }}><button className="btn-text" onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>{isSignUp ? 'Have an existing node? Log in' : 'Need new configuration? Register'}</button></div>
+              </div>
+            </div>
+          )}
+
+          {view === 'DASHBOARD' && (
+            <div className="dashboard-container">
+              <aside className="nav-drawer">
+                <div>
+                  <div style={{ color: '#fff', paddingBottom: '16px' }}>// CORE_SYS_v2.0</div>
+                  <div className="drawer-menu">
+                    <div className={`drawer-item ${dashTab === 'METRICS' ? 'active' : ''}`} onClick={() => setDashTab('METRICS')}>ACTIVE_OPERATIONS</div>
+                    <div className={`drawer-item ${dashTab === 'ACCOMPLISHMENTS' ? 'active' : ''}`} onClick={() => setDashTab('ACCOMPLISHMENTS')}>ACCOMPLISHMENTS ({completedTasks.length})</div>
+                  </div>
+                </div>
+                <button className="hud-btn" onClick={() => setView('LANDING')}>DISCONNECT</button>
+              </aside>
+              <main className="main-content">
+                <header className="hud-header">
+                  <div style={{ color: '#fff' }}>SYSTEM_STREAM_MONITOR // {dashTab === 'METRICS' ? 'CORE_METRICS' : 'VAULT'}</div>
+                  <div style={{ width: '200px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px' }}><span>RESOLVED:</span><span>{progressPercentage}%</span></div>
+                    <div className="progress-bar-container"><div className="progress-bar-fill" style={{ width: progressPercentage + '%' }}></div></div>
+                  </div>
+                </header>
+
+                {dashTab === 'METRICS' ? (
+                  <div className="dashboard-grid">
+                    <section className="panel-box">
+                      <div className="stat-row"><span>TOTAL NODES:</span><span>{tasks.length}</span></div>
+                      <div className="stat-row"><span>PENDING:</span><span>{pendingTasks.length}</span></div>
+                      <div className="stat-row"><span>COMPLETED:</span><span>{completedTasks.length}</span></div>
+                    </section>
+                    <section>
+                      {pendingTasks.map(task => (
+                        <div key={task.id} className="op-card">
+                          <div style={{ display: 'flex', gap: '16px' }}>
+                            <div className="hud-checkbox" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'COMPLETED' } : t))}></div>
+                            <div>{task.title}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </section>
+                  </div>
+                ) : (
+                  <div className="panel-box">
+                    {completedTasks.map(task => (
+                      <div key={task.id} className="op-card" style={{ opacity: 0.7 }}>
+                        <div style={{ display: 'flex', gap: '16px' }}>
+                          <div className="hud-checkbox checked" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'PENDING' } : t))}></div>
+                          <div style={{ textDecoration: 'line-through' }}>{task.title}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </main>
+            </div>
+          )}
+        </React.Fragment>
+      );
+    }
+
+    const container = document.getElementById('root');
+    const reactRoot = ReactDOM.createRoot(container);
+    reactRoot.render(<App />);
+</script>
