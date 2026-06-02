@@ -302,9 +302,18 @@
           const [newDesc, setNewDesc] = React.useState('');
           const [newPrio, setNewPrio] = React.useState('Medium');
 
+          // Bulletproof initialization block with an explicit try-catch handler to prevent execution halts
           const [tasks, setTasks] = React.useState(() => {
-            const data = localStorage.getItem('student_tasks_matrix');
-            return data ? JSON.parse(data) : [
+            try {
+              const data = localStorage.getItem('student_tasks_matrix');
+              if (data) {
+                const parsed = JSON.parse(data);
+                if (Array.isArray(parsed)) return parsed;
+              }
+            } catch (e) {
+              console.error("Local storage structure reset forced:", e);
+            }
+            return [
               { id: 't-1', title: 'Prepare Final Project Mockups', description: 'Design layout wireframes using UI tools for submission.', priority: 'High', status: 'PENDING' },
               { id: 't-2', title: 'Set Up Initial React Application', description: 'Configure base project repository and verify live host links.', priority: 'Medium', status: 'PENDING' },
               { id: 't-3', title: 'Review Database Synchronization Logic', description: 'Audit offline storage rules and verify dynamic data components work.', priority: 'Low', status: 'COMPLETED' }
@@ -312,7 +321,11 @@
           });
 
           React.useEffect(() => {
-            localStorage.setItem('student_tasks_matrix', JSON.stringify(tasks));
+            try {
+              localStorage.setItem('student_tasks_matrix', JSON.stringify(tasks));
+            } catch (e) {
+              console.error("Saving state error:", e);
+            }
           }, [tasks]);
 
           const completedTasks = tasks.filter(t => t.status === 'COMPLETED');
