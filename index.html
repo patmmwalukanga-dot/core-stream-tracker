@@ -21,6 +21,66 @@
         overflow-x: hidden;
       }
 
+      /* Landing Presentation Framing */
+      .landing-wrapper {
+        min-height: 100vh;
+        background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 45vw);
+      }
+      .landing-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 6%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(11, 15, 25, 0.7);
+        backdrop-filter: blur(12px);
+      }
+      .hero-section {
+        text-align: center;
+        padding: 100px 20px 40px 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .hero-tag {
+        display: inline-block;
+        background: rgba(99, 102, 241, 0.1);
+        color: #818cf8;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 9999px;
+        margin-bottom: 20px;
+        letter-spacing: 0.5px;
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .hero-title {
+        font-size: 42px;
+        font-weight: 700;
+        letter-spacing: -1.5px;
+        line-height: 1.2;
+        margin: 0 0 20px 0;
+        color: #ffffff;
+      }
+
+      /* Auth Interface Presentation */
+      .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05), transparent 400px);
+      }
+      .auth-card {
+        background: #0f1626;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 400px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
       /* Base Layout Matrix */
       .dashboard-container { 
         display: flex; 
@@ -28,7 +88,7 @@
         position: relative;
       }
 
-      /* Hidden/Collapsible Compartment Navigation */
+      /* Hidden Compartment Navigation Drawer */
       .nav-drawer {
         width: 280px;
         background: #0d1322;
@@ -39,30 +99,22 @@
         padding: 24px;
         box-sizing: border-box;
         position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
+        top: 0; bottom: 0; left: 0;
         z-index: 100;
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 20px 0 30px rgba(0, 0, 0, 0.5);
       }
-      .nav-drawer.open {
-        transform: translateX(0);
-      }
+      .nav-drawer.open { transform: translateX(0); }
 
-      /* Blur Overlay when compartment is expanded */
       .drawer-overlay {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(3, 7, 18, 0.6);
         backdrop-filter: blur(4px);
-        z-index: 90;
-        display: none;
+        z-index: 90; display: none;
       }
-      .drawer-overlay.visible {
-        display: block;
-      }
+      .drawer-overlay.visible { display: block; }
 
       .drawer-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 32px; }
       .drawer-item {
@@ -88,18 +140,16 @@
         color: #ffffff;
       }
 
-      /* Main Workspace Layout */
+      /* Main Workspace Grid Framework */
       .main-content { 
         flex-grow: 1; 
         padding: 32px 40px; 
         box-sizing: border-box; 
         width: 100%;
-        max-width: 1600px; 
+        max-width: 1650px; 
         margin: 0 auto;
-        transition: padding 0.3s ease;
       }
       
-      /* Top Control Header Layout */
       .hud-header { 
         display: flex; 
         justify-content: space-between; 
@@ -110,55 +160,20 @@
         gap: 20px;
       }
 
-      .header-controls-left {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      /* Interactive Menu Button */
-      .menu-trigger-btn {
-        background: #111827;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        color: #ffffff;
-        padding: 10px 14px;
-        font-size: 13px;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-family: 'JetBrains Mono', monospace;
-        transition: all 0.2s ease;
-      }
-      .menu-trigger-btn:hover {
-        background: #1f2937;
-        border-color: #6366f1;
-        box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
-      }
-
-      .brand-logo {
-        font-weight: 700;
-        font-size: 16px;
-        letter-spacing: -0.5px;
-        color: #ffffff;
-      }
-      .brand-logo span { color: #6366f1; }
-
-      /* Telemetry Progress Visualizer */
-      .progress-bar-container { background: rgba(255,255,255,0.05); border-radius: 9999px; height: 6px; width: 180px; margin-top: 8px; overflow: hidden; }
-      .progress-bar-fill { background: linear-gradient(90deg, #10b981, #34d399); height: 100%; transition: width 0.4s ease; }
-
-      /* Rich Grid Paneling System */
+      /* Multi-Column High Density Grid Setup */
       .dashboard-layout-grid { 
         display: grid; 
-        grid-template-columns: 360px 1fr; 
-        gap: 28px; 
+        grid-template-columns: 320px 1fr 320px; 
+        gap: 24px; 
         align-items: start; 
       }
-      @media (max-width: 1100px) {
+      @media (max-width: 1400px) {
+        .dashboard-layout-grid { grid-template-columns: 320px 1fr; }
+        .right-activity-column { grid-column: span 2; }
+      }
+      @media (max-width: 1000px) {
         .dashboard-layout-grid { grid-template-columns: 1fr; }
+        .right-activity-column { grid-column: span 1; }
       }
 
       .panel-stack { display: flex; flex-direction: column; gap: 24px; }
@@ -166,144 +181,122 @@
         background: #0f1626; 
         border: 1px solid rgba(255, 255, 255, 0.05); 
         border-radius: 12px; 
-        padding: 24px; 
+        padding: 20px; 
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); 
       }
       .panel-title { 
-        font-size: 11px; 
-        font-weight: 700; 
-        color: #818cf8; 
-        margin-bottom: 16px; 
-        text-transform: uppercase; 
-        letter-spacing: 1px;
+        font-size: 11px; font-weight: 700; color: #818cf8; 
+        margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
         font-family: 'JetBrains Mono', monospace;
+        display: flex; justify-content: space-between; align-items: center;
+      }
+
+      /* Horizontal Metric Cards System (Borrowed from Reference Layout) */
+      .horizontal-metrics-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .metric-mini-card {
+        background: #131b2e;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .metric-mini-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; font-weight: 600; }
+      .metric-mini-val { font-size: 26px; font-weight: 700; color: #ffffff; margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+
+      /* Visual Weekly Analytics Panel */
+      .chart-container {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-end;
+        height: 110px;
+        padding: 10px 10px 0 10px;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.01);
+        border-radius: 8px;
       }
+      .chart-column-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        gap: 8px;
+      }
+      .chart-bar-fill {
+        width: 24px;
+        background: linear-gradient(180deg, #6366f1, #4f46e5);
+        border-radius: 4px 4px 0 0;
+        transition: height 0.5s ease;
+        min-height: 4px;
+      }
+      .chart-day-label { font-size: 11px; color: #6b7280; font-family: 'JetBrains Mono', monospace; }
 
-      /* Functional Telemetry Metrics Rows */
-      .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 13px; color: #9ca3af; }
+      /* Activity Feed Panel (Borrowed from Reference Layout) */
+      .activity-feed { display: flex; flex-direction: column; gap: 14px; }
+      .activity-node {
+        display: flex;
+        gap: 12px;
+        font-size: 12.5px;
+        line-height: 1.4;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      }
+      .activity-marker { width: 6px; height: 6px; border-radius: 50%; background: #6366f1; margin-top: 5px; flex-shrink: 0; }
+      .activity-time { font-size: 11px; color: #6b7280; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+      /* UI Control Settings */
+      .menu-trigger-btn {
+        background: #111827; border: 1px solid rgba(255, 255, 255, 0.08); color: #ffffff;
+        padding: 10px 14px; font-size: 13px; font-weight: 600; border-radius: 8px;
+        cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace;
+      }
+      .menu-trigger-btn:hover { background: #1f2937; border-color: #6366f1; }
+      .brand-logo { font-weight: 700; font-size: 16px; letter-spacing: -0.5px; color: #ffffff; }
+      .brand-logo span { color: #6366f1; }
+      
+      .stat-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 13px; color: #9ca3af; }
       .stat-row span:last-child { color: #ffffff; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
       
-      /* Premium Inputs */
       .hud-input, .hud-select, .hud-textarea { 
-        width: 100%; 
-        padding: 10px 12px; 
-        background: #161f33; 
-        border: 1px solid rgba(255, 255, 255, 0.08); 
-        border-radius: 8px; 
-        color: #ffffff; 
-        box-sizing: border-box; 
-        margin-top: 5px; 
-        font-family: inherit;
-        font-size: 13px;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        width: 100%; padding: 10px 12px; background: #161f33; border: 1px solid rgba(255, 255, 255, 0.08); 
+        border-radius: 8px; color: #ffffff; box-sizing: border-box; margin-top: 5px; font-family: inherit; font-size: 13px;
       }
-      .hud-input:focus, .hud-select:focus, .hud-textarea:focus {
-        outline: none;
-        border-color: #6366f1;
-        box-shadow: 0 0 8px rgba(99, 102, 241, 0.15);
-      }
-      .hud-textarea { resize: vertical; height: 80px; }
+      .hud-textarea { resize: vertical; height: 75px; }
 
-      /* Filter Badges Array */
-      .filter-bar {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 16px;
-        overflow-x: auto;
-      }
+      .filter-bar { display: flex; gap: 6px; margin-bottom: 16px; }
       .filter-chip {
-        background: #111827;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        color: #9ca3af;
-        padding: 6px 12px;
-        font-size: 12px;
-        font-weight: 500;
-        border-radius: 6px;
-        cursor: pointer;
-        font-family: 'JetBrains Mono', monospace;
-        transition: all 0.15s ease;
+        background: #111827; border: 1px solid rgba(255, 255, 255, 0.05); color: #9ca3af;
+        padding: 6px 12px; font-size: 11px; font-weight: 500; border-radius: 6px; cursor: pointer; font-family: 'JetBrains Mono', monospace;
       }
-      .filter-chip.active {
-        background: #6366f1;
-        color: #ffffff;
-        border-color: #6366f1;
-      }
+      .filter-chip.active { background: #6366f1; color: #ffffff; border-color: #6366f1; }
 
-      /* Task Stream Presentation Cards */
       .op-card { 
-        background: #0f1626; 
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 12px; 
-        padding: 18px 20px; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        margin-bottom: 12px; 
-        transition: border-color 0.2s ease, transform 0.2s ease;
+        background: #0f1626; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; 
+        padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; 
       }
-      .op-card:hover {
-        border-color: rgba(99, 102, 241, 0.3);
-        transform: translateY(-1px);
-      }
-      
-      .priority-badge {
-        display: inline-block;
-        font-size: 10px;
-        font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 4px;
-        margin-top: 6px;
-        font-family: 'JetBrains Mono', monospace;
-        text-transform: uppercase;
-      }
+      .priority-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
       .prio-High .priority-badge { background: rgba(239, 68, 68, 0.12); color: #f87171; }
       .prio-Medium .priority-badge { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
       .prio-Low .priority-badge { background: rgba(16, 185, 129, 0.12); color: #34d399; }
       
-      /* UI Custom Controls */
-      .hud-checkbox { 
-        width: 18px; height: 18px; 
-        border: 2px solid #4b5563; 
-        border-radius: 5px; 
-        cursor: pointer; 
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; transition: all 0.2s ease;
-      }
-      .hud-checkbox:hover { border-color: #6366f1; background: rgba(99, 102, 241, 0.05); }
+      .hud-checkbox { width: 18px; height: 18px; border: 2px solid #4b5563; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
       .hud-checkbox.checked { background: #10b981; border-color: #10b981; }
-      
-      .delete-btn {
-        background: transparent; border: none; color: #6b7280;
-        cursor: pointer; font-family: inherit; font-size: 12px;
-        padding: 6px 10px; border-radius: 6px; transition: all 0.2s ease;
-      }
-      .delete-btn:hover { color: #ef4444; background: rgba(239, 68, 68, 0.08); }
+      .delete-btn { background: transparent; border: none; color: #6b7280; cursor: pointer; font-size: 12px; padding: 6px 10px; }
+      .delete-btn:hover { color: #ef4444; }
 
-      .hud-btn { 
-        background: #1f2937; border: 1px solid rgba(255, 255, 255, 0.06); color: #ffffff;
-        padding: 10px 18px; font-size: 13px; font-weight: 500; cursor: pointer; 
-        border-radius: 8px; transition: all 0.2s ease;
-      }
-      .hud-btn:hover { background: #2d3748; }
+      .hud-btn { background: #1f2937; border: 1px solid rgba(255, 255, 255, 0.06); color: #ffffff; padding: 10px 18px; font-size: 13px; cursor: pointer; border-radius: 8px; }
       .btn-primary { background: #6366f1; color: #ffffff; border: none; font-weight: 600; }
       .btn-primary:hover { background: #4f46e5; }
 
-      /* Clock & Timer Display System */
-      .telemetry-timer {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 20px;
-        font-weight: 700;
-        color: #34d399;
-        text-align: center;
-        background: #161f33;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px dashed rgba(52, 211, 153, 0.2);
-        margin-bottom: 12px;
-      }
+      .telemetry-timer { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #34d399; text-align: center; background: #161f33; padding: 10px; border-radius: 8px; border: 1px dashed rgba(52, 211, 153, 0.2); margin-bottom: 12px; }
+      .progress-bar-container { background: rgba(255,255,255,0.05); border-radius: 9999px; height: 6px; width: 140px; margin-top: 6px; overflow: hidden; }
+      .progress-bar-fill { background: #10b981; height: 100%; transition: width 0.4s ease; }
     </style>
 </head>
 <body>
@@ -312,22 +305,38 @@
 
     <script type="text/babel">
         function App() {
-          // Dynamic Layout Controllers
+          // View Flow Architecture: LANDING -> AUTH -> DASHBOARD
+          const [view, setView] = React.useState('LANDING');
+          const [isSignUp, setIsSignUp] = React.useState(false);
+          const [authError, setAuthError] = React.useState('');
+          const [currentUser, setCurrentUser] = React.useState(null);
+
+          const [username, setUsername] = React.useState('');
+          const [password, setPassword] = React.useState('');
+
+          // Dashboard Navigation & Layout Controls
           const [drawerOpen, setDrawerOpen] = React.useState(false);
           const [dashTab, setDashTab] = React.useState('ACTIVE_WORKSPACE');
           const [priorityFilter, setPriorityFilter] = React.useState('ALL');
           const [currentTime, setCurrentTime] = React.useState(new Date().toLocaleTimeString());
 
-          // Input Form Management States
+          // Input State Fields
           const [newTitle, setNewTitle] = React.useState('');
           const [newDesc, setNewDesc] = React.useState('');
           const [newPrio, setNewPrio] = React.useState('Medium');
 
-          // Sprint Interval Focus Block variables
-          const [sprintTime, setSprintTime] = React.useState(1500); // 25-minute study sprint
+          // Countdown Execution Sprint Parameters
+          const [sprintTime, setSprintTime] = React.useState(1500);
           const [sprintActive, setSprintActive] = React.useState(false);
 
-          // Fault-tolerant Local Data Sandbox Assembly
+          // Simulated Activity Stream Cache (Preloaded with historical actions)
+          const [activities, setActivities] = React.useState([
+            { id: 1, text: 'System matrix initialized inside local secure sandbox array.', logs: '10:12 AM' },
+            { id: 2, text: 'Completed verification run on SQLite local sync rules.', logs: '09:40 AM' },
+            { id: 3, text: 'Refactored navigation drawer component parameters.', logs: 'Yesterday' }
+          ]);
+
+          // Fault-Tolerant Browser Cache Controller
           const [tasks, setTasks] = React.useState(() => {
             try {
               const data = localStorage.getItem('student_tasks_matrix');
@@ -336,22 +345,21 @@
                 if (Array.isArray(parsed)) return parsed;
               }
             } catch (e) {
-              console.error("Local operational ledger reset execution required:", e);
+              console.error("Local operational cache clear executed:", e);
             }
             return [
-              { id: 't-1', title: 'Review Fiber Optics Architecture & Path Loss Calculations', description: 'Study single-mode link budget constraints and signal attenuation formulas for upcoming examinations.', priority: 'High', status: 'PENDING' },
-              { id: 't-2', title: 'Audit Campus Marketplace Offline Database Sync Rules', description: 'Optimize SQLite transactional queries inside the application controller to synchronize fluidly with local XAMPP/MySQL backend clusters.', priority: 'High', status: 'PENDING' },
-              { id: 't-3', title: 'Refactor Flutter Mobile Interface Layout Structures', description: 'Improve presentation widget structures to maximize scaling accuracy on fluid native screens.', priority: 'Medium', status: 'PENDING' },
-              { id: 't-4', title: 'Master 2D Keyframe In-betweening Mechanics', description: 'Complete daily timed construction sketching principles within target storyboard frames.', priority: 'Low', status: 'COMPLETED' }
+              { id: 't-1', title: 'Review Fiber Optics Link Budget Constraints', description: 'Analyze single-mode path attenuation calculations and connector loss factors.', priority: 'High', status: 'PENDING' },
+              { id: 't-2', title: 'Audit Campus Marketplace Transaction Handlers', description: 'Ensure SQLite sync logic functions reliably against local XAMPP/MySQL backend systems.', priority: 'High', status: 'PENDING' },
+              { id: 't-3', title: 'Complete Drawing Board Proportions Drills', description: 'Execute daily timed sketchbook structural layout constructions.', priority: 'Low', status: 'COMPLETED' }
             ];
           });
 
-          // State Synchronizer Effect 
+          // Sync State to Memory Arrays
           React.useEffect(() => {
             localStorage.setItem('student_tasks_matrix', JSON.stringify(tasks));
           }, [tasks]);
 
-          // Running Clock Effect Array
+          // Live Clock Execution
           React.useEffect(() => {
             const timer = setInterval(() => {
               setCurrentTime(new Date().toLocaleTimeString());
@@ -359,31 +367,64 @@
             return () => clearInterval(timer);
           }, []);
 
-          // Sprint Block Count Down Handler
+          // Sprint Countdown Thread Loop
           React.useEffect(() => {
             let interval = null;
             if (sprintActive && sprintTime > 0) {
-              interval = setInterval(() => {
-                setSprintTime(prev => prev - 1);
-              }, 1000);
+              interval = setInterval(() => setSprintTime(p => p - 1), 1000);
             } else if (sprintTime === 0) {
               setSprintActive(false);
-              alert("Sprint session execution complete! Take a step back to rest.");
+              pushActivity('Focus execution block complete.');
+              alert("Sprint block complete! Step away and take a brief rest.");
               setSprintTime(1500);
             }
             return () => clearInterval(interval);
           }, [sprintActive, sprintTime]);
 
-          // Calculations Grid Metrics
+          // Data Metrics Computations
           const completedTasks = tasks.filter(t => t.status === 'COMPLETED');
           const pendingTasks = tasks.filter(t => t.status === 'PENDING');
           const filteredPendingTasks = pendingTasks.filter(t => priorityFilter === 'ALL' || t.priority === priorityFilter);
           const completionRatio = tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
 
-          const formatSprintDisplay = (seconds) => {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          // Push new dynamic notification log to Activity Feed
+          const pushActivity = (text) => {
+            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            setActivities(prev => [{ id: Date.now(), text, logs: timeString }, ...prev]);
+          };
+
+          const handleAuthSubmit = (e) => {
+            e.preventDefault();
+            setAuthError('');
+
+            if (!username.trim() || !password.trim()) {
+              setAuthError('Please input both terminal parameters.');
+              return;
+            }
+
+            if (isSignUp) {
+              localStorage.setItem('student_usr_' + username, password);
+              setCurrentUser(username);
+              setView('DASHBOARD');
+              pushActivity(`Registered new local security user node: ${username}`);
+            } else {
+              const record = localStorage.getItem('student_usr_' + username);
+              if ((username === 'student_dev' && password === 'admin') || record === password) {
+                setCurrentUser(username === 'student_dev' ? 'Student Workspace' : username);
+                setView('DASHBOARD');
+                pushActivity(`Authorized runtime session access for user.`);
+              } else {
+                setAuthError('Access denied: Bad hash or parameters.');
+              }
+            }
+          };
+
+          const handleLogout = () => {
+            setCurrentUser(null);
+            setUsername('');
+            setPassword('');
+            setDrawerOpen(false);
+            setView('LANDING');
           };
 
           const handleAddTaskSubmit = (e) => {
@@ -399,200 +440,291 @@
             };
 
             setTasks([...tasks, entry]);
-            setNewTitle('');
-            setNewDesc('');
-            setNewPrio('Medium');
+            pushActivity(`Injected new task node into array: "${newTitle}"`);
+            setNewTitle(''); setNewDesc(''); setNewPrio('Medium');
           };
 
           const handleToggleTaskStatus = (id, currentStatus) => {
             const adjustedStatus = currentStatus === 'PENDING' ? 'COMPLETED' : 'PENDING';
+            const targets = tasks.find(t => t.id === id);
             setTasks(tasks.map(t => t.id === id ? { ...t, status: adjustedStatus } : t));
+            pushActivity(`Status alteration executed on node "${targets?.title}" -> ${adjustedStatus}`);
           };
 
           const handlePurgeTask = (id) => {
+            const targets = tasks.find(t => t.id === id);
             setTasks(tasks.filter(t => t.id !== id));
+            if (targets) pushActivity(`Purged task array node: "${targets.title}"`);
           };
 
           return (
-            <div className="dashboard-container">
+            <React.Fragment>
               
-              {/* Blur Overlay Panel */}
-              <div className={`drawer-overlay ${drawerOpen ? 'visible' : ''}`} onClick={() => setDrawerOpen(false)}></div>
-
-              {/* Collapsible Hidden Compartment Sidebar */}
-              <aside className={`nav-drawer ${drawerOpen ? 'open' : ''}`}>
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {/* LANDING FRAME LAYOUT VIEW */}
+              {view === 'LANDING' && (
+                <div className="landing-wrapper">
+                  <nav className="landing-nav">
                     <div className="brand-logo">⚡ Task<span>Matrix</span></div>
-                    <button className="delete-btn" style={{ fontSize: '18px' }} onClick={() => setDrawerOpen(false)}>×</button>
-                  </div>
-                  
-                  <div className="drawer-menu">
-                    <div className={`drawer-item ${dashTab === 'ACTIVE_WORKSPACE' ? 'active' : ''}`} 
-                         onClick={() => { setDashTab('ACTIVE_WORKSPACE'); setDrawerOpen(false); }}>
-                      ⚙️ Active Operations
+                    <button className="hud-btn btn-primary" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>Sign In</button>
+                  </nav>
+                  <header className="hero-section">
+                    <div className="hero-tag">System Terminal v2.5 // Live</div>
+                    <h1 className="hero-title">Track your academic pipelines flawlessly</h1>
+                    <p style={{ color: '#9ca3af', fontSize: '16px', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto 32px auto' }}>
+                      High density workflow tracking, granular telemetry metrics, and structural project logs bound to an isolated secure runtime environment.
+                    </p>
+                    <div style={{ display: 'flex', gap: '14px', justifyContent: 'center' }}>
+                      <button className="hud-btn btn-primary" onClick={() => { setIsSignUp(true); setView('AUTH'); }}>Initialize Matrix</button>
                     </div>
-                    <div className={`drawer-item ${dashTab === 'ARCHIVE_LEDGER' ? 'active' : ''}`} 
-                         onClick={() => { setDashTab('ARCHIVE_LEDGER'); setDrawerOpen(false); }}>
-                      📋 Completed Archive History
+                  </header>
+                </div>
+              )}
+
+              {/* AUTH PANEL INTERFACE VIEW */}
+              {view === 'AUTH' && (
+                <div className="auth-wrapper">
+                  <div className="auth-card">
+                    <div style={{ fontSize: '18px', fontWeight: 600, color: '#fff', marginBottom: '6px' }}>
+                      {isSignUp ? 'Generate Local Security Matrix' : 'Establish Session Sync'}
+                    </div>
+                    <p style={{ color: '#9ca3af', fontSize: '13px', margin: '0 0 20px 0' }}>Input secure workspace cryptographic access params.</p>
+                    {authError && <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#ef4444', padding: '10px', borderRadius: '6px', fontSize: '12px', marginBottom: '16px' }}>{authError}</div>}
+                    <form onSubmit={handleAuthSubmit}>
+                      <div style={{ marginBottom: '14px' }}>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>ACCESS ID</label>
+                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="hud-input" placeholder="student_dev" />
+                      </div>
+                      <div style={{ marginBottom: '20px' }}>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>SECURITY TOKEN</label>
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" placeholder="••••••••" />
+                      </div>
+                      <button type="submit" className="hud-btn btn-primary" style={{ width: '100%', padding: '11px' }}>
+                        {isSignUp ? 'Generate System Node' : 'Verify Security Context'}
+                      </button>
+                    </form>
+                    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                      <button className="delete-btn" style={{ fontSize: '13px' }} onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>
+                        {isSignUp ? 'Return to authentication sync gateway' : 'Need new sandboxed credentials? Create account'}
+                      </button>
                     </div>
                   </div>
                 </div>
+              )}
 
-                <div>
-                  <div style={{ fontSize: '12px', color: '#818cf8', fontFamily: 'JetBrains Mono, monospace', marginBottom: '8px' }}>CORE_ENV_SECURE</div>
-                  <div style={{ fontSize: '14px', color: '#fff', fontWeight: 600, paddingLeft: '12px', borderLeft: '2px solid #6366f1' }}>Student Workspace</div>
-                </div>
-              </aside>
+              {/* RUNTIME SYSTEM DASHBOARD VIEW */}
+              {view === 'DASHBOARD' && (
+                <div className="dashboard-container">
+                  <div className={`drawer-overlay ${drawerOpen ? 'visible' : ''}`} onClick={() => setDrawerOpen(false)}></div>
 
-              {/* Workspace Main Execution Section */}
-              <main className="main-content">
-                
-                {/* Control Top Header */}
-                <header className="hud-header">
-                  <div className="header-controls-left">
-                    <button className="menu-trigger-btn" onClick={() => setDrawerOpen(true)}>
-                      ☰ OPEN NAV_MENU
-                    </button>
+                  {/* Hidden Navigation Compartment Side Drawer */}
+                  <aside className={`nav-drawer ${drawerOpen ? 'open' : ''}`}>
                     <div>
-                      <h1 style={{ fontSize: '22px', fontWeight: 700, margin: 0, color: '#fff', letterSpacing: '-0.5px' }}>
-                        {dashTab === 'ACTIVE_WORKSPACE' ? 'System Terminal Dashboard' : 'Archived Operational Logs'}
-                      </h1>
-                    </div>
-                  </div>
-
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '180px', fontSize: '12px' }}>
-                      <span style={{ color: '#9ca3af' }}>Completion Progress</span>
-                      <span style={{ color: '#10b981', fontWeight: 700, fontFamily: 'JetBrains Mono' }}>{completionRatio}%</span>
-                    </div>
-                    <div className="progress-bar-container">
-                      <div className="progress-bar-fill" style={{ width: `${completionRatio}%` }}></div>
-                    </div>
-                  </div>
-                </header>
-
-                {dashTab === 'ACTIVE_WORKSPACE' ? (
-                  <div className="dashboard-layout-grid">
-                    
-                    {/* Left Hand Auxiliary Configuration Panels */}
-                    <div className="panel-stack">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div className="brand-logo">⚡ Task<span>Matrix</span></div>
+                        <button className="delete-btn" style={{ fontSize: '18px' }} onClick={() => setDrawerOpen(false)}>×</button>
+                      </div>
                       
-                      {/* Live System Diagnostics Module */}
-                      <section className="panel-box">
-                        <div className="panel-title">
-                          <span>System Telemetry</span>
-                          <span style={{ color: '#34d399' }}>● ONLINE</span>
+                      <div className="drawer-menu">
+                        <div className={`drawer-item ${dashTab === 'ACTIVE_WORKSPACE' ? 'active' : ''}`} 
+                             onClick={() => { setDashTab('ACTIVE_WORKSPACE'); setDrawerOpen(false); }}>
+                          ⚙️ Active Operations
                         </div>
-                        <div className="stat-row"><span>Environment Clock</span><span>{currentTime}</span></div>
-                        <div className="stat-row"><span>Active Node Count</span><span>{pendingTasks.length} Units</span></div>
-                        <div className="stat-row"><span>Archive Index Size</span><span>{completedTasks.length} Units</span></div>
-                        <div className="stat-row"><span>Local Storage Cache</span><span>Secured / Isolated</span></div>
-                      </section>
-
-                      {/* Execution Focus Block Module */}
-                      <section className="panel-box">
-                        <div className="panel-title">Sprint Execution Block</div>
-                        <div className="telemetry-timer">{formatSprintDisplay(sprintTime)}</div>
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                          <button className="hud-btn btn-primary" style={{ flex: 1, padding: '8px' }} onClick={() => setSprintActive(!sprintActive)}>
-                            {sprintActive ? 'Halt Session' : 'Initiate Sprint'}
-                          </button>
-                          <button className="hud-btn" style={{ padding: '8px 12px' }} onClick={() => { setSprintActive(false); setSprintTime(1500); }}>
-                            Reset
-                          </button>
+                        <div className={`drawer-item ${dashTab === 'ARCHIVE_LEDGER' ? 'active' : ''}`} 
+                             onClick={() => { setDashTab('ARCHIVE_LEDGER'); setDrawerOpen(false); }}>
+                          📋 Completed Archive History
                         </div>
-                      </section>
-
-                      {/* Entry Generation Interface Component */}
-                      <section className="panel-box">
-                        <div className="panel-title">Initialize Workspace Node</div>
-                        <form onSubmit={handleAddTaskSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                          <div>
-                            <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>OPERATION TASK TITLE</label>
-                            <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="hud-input" placeholder="e.g., Audit Flutter Controller State" required />
-                          </div>
-                          <div>
-                            <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>OPERATIONAL REASONING / METRICS</label>
-                            <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value)} className="hud-textarea" placeholder="Input execution rules, deadlines, or resource files pathing details..."></textarea>
-                          </div>
-                          <div>
-                            <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>PRIORITY MATRIX CLASSIFICATION</label>
-                            <select value={newPrio} onChange={(e) => setNewPrio(e.target.value)} className="hud-select">
-                              <option value="High">High Urgency Pathway</option>
-                              <option value="Medium">Medium Urgency Pathway</option>
-                              <option value="Low">Low Urgency Pathway</option>
-                            </select>
-                          </div>
-                          <button type="submit" className="hud-btn btn-primary" style={{ marginTop: '4px', padding: '10px' }}>Inject Into Workspace</button>
-                        </form>
-                      </section>
+                      </div>
                     </div>
 
-                    {/* Right Hand Operational Pipeline Displays */}
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                        <div style={{ fontSize: '12px', fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', fontFamily: 'JetBrains Mono' }}>
-                          Current Operational Pipeline ({filteredPendingTasks.length})
-                        </div>
-                      </div>
-
-                      {/* Advanced Filtering Sub-system */}
-                      <div className="filter-bar">
-                        {['ALL', 'High', 'Medium', 'Low'].map(prio => (
-                          <button key={prio} className={`filter-chip ${priorityFilter === prio ? 'active' : ''}`} onClick={() => setPriorityFilter(prio)}>
-                            {prio === 'ALL' ? '// SHOW ALL' : `${prio} Urgency`}
-                          </button>
-                        ))}
-                      </div>
-
-                      {filteredPendingTasks.length === 0 ? (
-                        <div style={{ padding: '80px 40px', textAlign: 'center', background: '#0f1626', border: '1px dashed rgba(255, 255, 255, 0.05)', borderRadius: '12px', fontSize: '14px', color: '#6b7280' }}>
-                          No ongoing processing arrays verified under the selected filter criteria.
-                        </div>
-                      ) : (
-                        filteredPendingTasks.map(task => (
-                          <div key={task.id} className={`op-card prio-${task.priority}`}>
-                            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                              <div className="hud-checkbox" style={{ marginTop: '3px' }} onClick={() => handleToggleTaskStatus(task.id, task.status)}></div>
-                              <div>
-                                <div style={{ fontWeight: 600, color: '#ffffff', fontSize: '15px', letterSpacing: '-0.2px' }}>{task.title}</div>
-                                <div style={{ fontSize: '13px', color: '#9ca3af', marginTop: '6px', lineHeight: '1.5' }}>{task.description}</div>
-                                <span className="priority-badge">{task.priority}</span>
-                              </div>
-                            </div>
-                            <button className="delete-btn" onClick={() => handlePurgeTask(task.id)}>Purge</button>
-                          </div>
-                        ))
-                      )}
+                      <div style={{ fontSize: '11px', color: '#818cf8', fontFamily: 'JetBrains Mono', marginBottom: '6px' }}>CORE_CONTEXT</div>
+                      <div style={{ fontSize: '14px', color: '#fff', fontWeight: 600, paddingLeft: '10px', borderLeft: '2px solid #6366f1', marginBottom: '16px' }}>{currentUser}</div>
+                      
+                      {/* Integrated Logout/Disconnect Handle Array */}
+                      <button className="hud-btn" style={{ width: '100%', background: 'rgba(239, 68, 68, 0.05)', borderColor: 'rgba(239, 68, 68, 0.2)', color: '#f87171' }} onClick={handleLogout}>
+                        Disconnect Session
+                      </button>
                     </div>
-                  </div>
-                ) : (
-                  /* Archived Historic Analytics Logs Screen */
-                  <div className="panel-box">
-                    <div className="panel-title">Historic Operation Record Archive</div>
-                    {completedTasks.length === 0 ? (
-                      <div style={{ padding: '80px 20px', textAlign: 'center', color: '#6b7280', fontSize: '14px' }}>No entries found saved to the archived telemetry storage database.</div>
-                    ) : (
-                      completedTasks.map(task => (
-                        <div key={task.id} className="op-card" style={{ background: 'rgba(15, 22, 38, 0.5)' }}>
-                          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                            <div className="hud-checkbox checked" onClick={() => handleToggleTaskStatus(task.id, task.status)}>
-                              <span style={{ color: '#ffffff', fontSize: '11px', fontWeight: 700 }}>✓</span>
+                  </aside>
+
+                  {/* Primary Grid Execution Shell */}
+                  <main className="main-content">
+                    <header className="hud-header">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <button className="menu-trigger-btn" onClick={() => setDrawerOpen(true)}>☰ CONTROL REVIEWS</button>
+                        <h1 style={{ fontSize: '20px', fontWeight: 700, margin: 0, color: '#fff', letterSpacing: '-0.3px' }}>
+                          {dashTab === 'ACTIVE_WORKSPACE' ? 'System Terminal Dashboard -> Active' : 'Archived Historic System Analytics'}
+                        </h1>
+                      </div>
+
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '140px', fontSize: '12px' }}>
+                          <span style={{ color: '#9ca3af' }}>Resolution</span>
+                          <span style={{ color: '#10b981', fontWeight: 700 }}>{completionRatio}%</span>
+                        </div>
+                        <div className="progress-bar-container">
+                          <div className="progress-bar-fill" style={{ width: `${completionRatio}%` }}></div>
+                        </div>
+                      </div>
+                    </header>
+
+                    {dashTab === 'ACTIVE_WORKSPACE' ? (
+                      <div className="dashboard-layout-grid">
+                        
+                        {/* COLUMN ONE: AUXILIARY UTILITIES & GENERATORS */}
+                        <div className="panel-stack">
+                          <section className="panel-box">
+                            <div className="panel-title"><span>System Telemetry</span><span style={{ color: '#34d399' }}>● ONLINE</span></div>
+                            <div className="stat-row"><span>Environment Clock</span><span>{currentTime}</span></div>
+                            <div className="stat-row"><span>Local Space Matrix</span><span>Isolated Sandbox</span></div>
+                          </section>
+
+                          <section className="panel-box">
+                            <div className="panel-title">Focus Block Execution</div>
+                            <div className="telemetry-timer">{Math.floor(sprintTime / 60).toString().padStart(2, '0')}:{(sprintTime % 60).toString().padStart(2, '0')}</div>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                              <button className="hud-btn btn-primary" style={{ flex: 1, padding: '8px' }} onClick={() => setSprintActive(!sprintActive)}>
+                                {sprintActive ? 'Halt Loop' : 'Initiate Sprint'}
+                              </button>
+                              <button className="hud-btn" style={{ padding: '8px 12px' }} onClick={() => { setSprintActive(false); setSprintTime(1500); }}>Reset</button>
                             </div>
-                            <div>
-                              <div style={{ textDecoration: 'line-through', color: '#6b7280', fontSize: '15px', fontWeight: 500 }}>{task.title}</div>
-                              <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>{task.description}</div>
+                          </section>
+
+                          <section className="panel-box">
+                            <div className="panel-title">Initialize Pipeline Element</div>
+                            <form onSubmit={handleAddTaskSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                              <div>
+                                <label style={{ fontSize: '11px', color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>IDENTIFIER TITLE</label>
+                                <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="hud-input" placeholder="e.g., Audit Fiber Optics" required />
+                              </div>
+                              <div>
+                                <label style={{ fontSize: '11px', color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>METRIC REASONING NOTES</label>
+                                <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value)} className="hud-textarea" placeholder="Input execution targets..."></textarea>
+                              </div>
+                              <div>
+                                <label style={{ fontSize: '11px', color: '#9ca3af', fontFamily: 'JetBrains Mono' }}>CRITICAL PATH VALUE</label>
+                                <select value={newPrio} onChange={(e) => setNewPrio(e.target.value)} className="hud-select">
+                                  <option value="High">High Urgency Pathway</option>
+                                  <option value="Medium">Medium Urgency Pathway</option>
+                                  <option value="Low">Low Urgency Pathway</option>
+                                </select>
+                              </div>
+                              <button type="submit" className="hud-btn btn-primary" style={{ marginTop: '4px' }}>Inject Into Workspace</button>
+                            </form>
+                          </section>
+                        </div>
+
+                        {/* COLUMN TWO: HIGH-DENSITY TRACKING FRAMEWORK */}
+                        <div>
+                          {/* Stolen Layout Component 1: Horizontal Quick Metrics Grid */}
+                          <div className="horizontal-metrics-row">
+                            <div className="metric-mini-card">
+                              <div className="metric-mini-label">Total Matrix Nodes</div>
+                              <div className="metric-mini-val">{tasks.length}</div>
+                            </div>
+                            <div className="metric-mini-card">
+                              <div className="metric-mini-label">Pending Execution</div>
+                              <div className="metric-mini-val" style={{ color: '#fbbf24' }}>{pendingTasks.length}</div>
+                            </div>
+                            <div className="metric-mini-card">
+                              <div className="metric-mini-label">Completed Log Array</div>
+                              <div className="metric-mini-val" style={{ color: '#10b981' }}>{completedTasks.length}</div>
                             </div>
                           </div>
-                          <button className="delete-btn" onClick={() => handlePurgeTask(task.id)}>Purge</button>
+
+                          {/* Stolen Layout Component 2: Weekly Progress Visualization Vector */}
+                          <section className="panel-box" style={{ marginBottom: '24px' }}>
+                            <div className="panel-title">Weekly Load Profile Matrix</div>
+                            <div className="chart-container">
+                              <div className="chart-column-wrapper"><div className="chart-bar-fill" style={{ height: '35px' }}></div><div className="chart-day-label">MON</div></div>
+                              <div className="chart-column-wrapper"><div className="chart-bar-fill" style={{ height: '65px', background: '#818cf8' }}></div><div className="chart-day-label">TUE</div></div>
+                              <div className="chart-column-wrapper"><div className="chart-bar-fill" style={{ height: '40px' }}></div><div className="chart-day-label">WED</div></div>
+                              <div className="chart-column-wrapper"><div className="chart-bar-fill" style={{ height: '80px', background: '#818cf8' }}></div><div className="chart-day-label">THU</div></div>
+                              <div className="chart-column-wrapper"><div className="chart-bar-fill" style={{ height: '50px' }}></div><div className="chart-day-label">FRI</div></div>
+                            </div>
+                          </section>
+
+                          {/* Primary Processing Array Stream */}
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                            <div style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>Running Workload Pipeline Matrix ({filteredPendingTasks.length})</div>
+                          </div>
+
+                          <div className="filter-bar">
+                            {['ALL', 'High', 'Medium', 'Low'].map(prio => (
+                              <button key={prio} className={`filter-chip ${priorityFilter === prio ? 'active' : ''}`} onClick={() => setPriorityFilter(prio)}>
+                                {prio === 'ALL' ? '// SHOW ALL' : `${prio} Path`}
+                              </button>
+                            ))}
+                          </div>
+
+                          {filteredPendingTasks.length === 0 ? (
+                            <div style={{ padding: '60px 20px', textAlign: 'center', background: '#0f1626', border: '1px dashed rgba(255, 255, 255, 0.05)', borderRadius: '12px', fontSize: '13px', color: '#6b7280' }}>
+                              No array entries match current configuration filter constraints.
+                            </div>
+                          ) : (
+                            filteredPendingTasks.map(task => (
+                              <div key={task.id} className={`op-card prio-${task.priority}`}>
+                                <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                                  <div className="hud-checkbox" style={{ marginTop: '3px' }} onClick={() => handleToggleTaskStatus(task.id, task.status)}></div>
+                                  <div>
+                                    <div style={{ fontWeight: 600, color: '#ffffff', fontSize: '15px' }}>{task.title}</div>
+                                    <div style={{ fontSize: '13px', color: '#9ca3af', marginTop: '4px', lineHeight: '1.4' }}>{task.description}</div>
+                                    <span className="priority-badge">{task.priority}</span>
+                                  </div>
+                                </div>
+                                <button className="delete-btn" onClick={() => handlePurgeTask(task.id)}>Purge</button>
+                              </div>
+                            ))
+                          )}
                         </div>
-                      ))
+
+                        {/* COLUMN THREE: STOLEN RECENT OPERATIONS TIMELINE LOG */}
+                        <div className="right-activity-column">
+                          <section className="panel-box">
+                            <div className="panel-title">Recent Matrix Actions</div>
+                            <div className="activity-feed">
+                              {activities.map(act => (
+                                <div key={act.id} className="activity-node">
+                                  <div className="activity-marker"></div>
+                                  <div>
+                                    <div style={{ color: '#e5e7eb' }}>{act.text}</div>
+                                    <div className="activity-time">{act.logs}</div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </section>
+                        </div>
+
+                      </div>
+                    ) : (
+                      /* ARCHIVED PERFORMANCE ENGINE RECORDS SCREEN */
+                      <div className="panel-box">
+                        <div className="panel-title">Historic Operational Database Storage</div>
+                        {completedTasks.length === 0 ? (
+                          <div style={{ padding: '60px 20px', textAlign: 'center', color: '#6b7280', fontSize: '13px' }}>Archive ledger records clear.</div>
+                        ) : (
+                          completedTasks.map(task => (
+                            <div key={task.id} className="op-card" style={{ background: 'rgba(15, 22, 38, 0.4)' }}>
+                              <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                                <div className="hud-checkbox checked" onClick={() => handleToggleTaskStatus(task.id, task.status)}>
+                                  <span style={{ color: '#ffffff', fontSize: '10px', fontWeight: 700 }}>✓</span>
+                                </div>
+                                <div>
+                                  <div style={{ textDecoration: 'line-through', color: '#6b7280', fontSize: '15px' }}>{task.title}</div>
+                                  <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '2px' }}>{task.description}</div>
+                                </div>
+                              </div>
+                              <button className="delete-btn" onClick={() => handlePurgeTask(task.id)}>Purge</button>
+                            </div>
+                          ))
+                        )}
+                      </div>
                     )}
-                  </div>
-                )}
-              </main>
-            </div>
+                  </main>
+                </div>
+              )}
+            </React.Fragment>
           );
         }
 
