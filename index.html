@@ -1,6 +1,15 @@
-<script type="text/babel">
-    // Fixed UI Style Engine - String Safe
-    const globalStyles = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORE_STREAM_TRACKER // Enterprise UX</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
       @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700;800&display=swap');
       
       :root {
@@ -20,6 +29,7 @@
         font-family: 'JetBrains Mono', monospace;
       }
 
+      /* Landing Page Layer Layout */
       .landing-wrapper {
         font-family: 'Space Grotesk', sans-serif;
         color: #fff;
@@ -89,6 +99,7 @@
         font-size: 20px;
         font-weight: 700;
         margin: 0 0 12px 0;
+        color: #fff;
       }
       .feature-desc {
         color: #94a3b8;
@@ -96,6 +107,7 @@
         line-height: 1.5;
       }
 
+      /* Gateway Entry Auth Layout */
       .auth-wrapper {
         min-height: 100vh;
         display: flex;
@@ -112,6 +124,7 @@
         padding: 40px;
       }
 
+      /* Interface Element Frameworks */
       .hud-btn { 
         background: rgba(0, 255, 204, 0.15); 
         border: 1px solid rgba(0, 255, 204, 0.2); 
@@ -138,6 +151,7 @@
         margin-top: 6px; 
       }
 
+      /* Core Operations Dashboard Interface */
       .dashboard-container { display: flex; min-height: 100vh; }
       .nav-drawer {
         width: 260px;
@@ -163,172 +177,247 @@
       .main-content { flex-grow: 1; padding: 32px; box-sizing: border-box; }
       
       .progress-bar-container { background: rgba(255,255,255,0.05); border-radius: 4px; height: 6px; width: 100%; margin-top: 8px; }
-      .progress-bar-fill { background: #00ffcc; height: 100%; }
+      .progress-bar-fill { background: #00ffcc; height: 100%; transition: width 0.3s ease; }
 
-      .alert-banner { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); color: #f87171; padding: 12px; border-radius: 6px; text-align: center; margin-bottom: 16px; }
+      .alert-banner { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); color: #f87171; padding: 12px; border-radius: 6px; text-align: center; margin-bottom: 16px; font-size: 12px; }
       .hud-header { display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0, 255, 204, 0.2); background: #0f172a; padding: 16px 24px; border-radius: 8px; margin-bottom: 24px; }
       .dashboard-grid { display: grid; grid-template-columns: 340px 1fr; gap: 24px; }
       .panel-box { background: #090f1e; border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 8px; padding: 20px; }
       .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed rgba(0,255,204,0.1); font-size: 12px; }
-      .op-card { background: #070b14; border: 1px solid rgba(255,255,255,0.03); border-left: 4px solid #4b5563; border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+      
+      .op-card { 
+        background: #070b14; 
+        border: 1px solid rgba(255,255,255,0.03); 
+        border-left: 4px solid #4b5563; 
+        border-radius: 8px; 
+        padding: 16px; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 12px; 
+      }
       .op-card.prio-High { border-left-color: #f87171; }
       .op-card.prio-Medium { border-left-color: #fbbf24; }
       .op-card.prio-Low { border-left-color: #34d399; }
-      .hud-checkbox { width: 18px; height: 18px; border: 2px solid #374151; border-radius: 4px; cursor: pointer; }
-      .hud-checkbox.checked { background: #00ffcc; }
-    `;
+      
+      .hud-checkbox { 
+        width: 18px; 
+        height: 18px; 
+        border: 2px solid #374151; 
+        border-radius: 4px; 
+        cursor: pointer; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hud-checkbox.checked { background: #00ffcc; border-color: #00ffcc; }
+    </style>
+</head>
+<body>
 
-    function App() {
-      const [view, setView] = React.useState('LANDING');
-      const [isSignUp, setIsSignUp] = React.useState(false);
-      const [authError, setAuthError] = React.useState('');
-      const [currentUser, setCurrentUser] = React.useState(null);
-      const [dashTab, setDashTab] = React.useState('METRICS');
+    <div id="root"></div>
 
-      const [username, setUsername] = React.useState('');
-      const [password, setPassword] = React.useState('');
+    <script type="text/babel">
+        function App() {
+          const [view, setView] = React.useState('LANDING');
+          const [isSignUp, setIsSignUp] = React.useState(false);
+          const [authError, setAuthError] = React.useState('');
+          const [currentUser, setCurrentUser] = React.useState(null);
+          const [dashTab, setDashTab] = React.useState('METRICS');
 
-      const [tasks, setTasks] = React.useState(() => {
-        const data = localStorage.getItem('tactical_ops_matrix');
-        return data ? JSON.parse(data) : [
-          { id: 'op-1', title: 'Optimize Cloud Server Pipeline Sync', description: 'Address latency bottleneck inside remote deployment actions array.', dueDate: '2026-06-05', priority: 'High', status: 'PENDING' },
-          { id: 'op-2', title: 'Refactor Top-Tier Component Hierarchy', description: 'Implement unified state routing pattern for Landing and Authentication gates.', dueDate: '2026-06-10', priority: 'Medium', status: 'COMPLETED' }
-        ];
-      });
+          const [username, setUsername] = React.useState('');
+          const [password, setPassword] = React.useState('');
 
-      React.useEffect(() => {
-        localStorage.setItem('tactical_ops_matrix', JSON.stringify(tasks));
-      }, [tasks]);
+          const [tasks, setTasks] = React.useState(() => {
+            const data = localStorage.getItem('tactical_ops_matrix');
+            return data ? JSON.parse(data) : [
+              { id: 'op-1', title: 'Optimize Cloud Server Pipeline Sync', description: 'Address latency bottleneck inside remote deployment actions array.', priority: 'High', status: 'PENDING' },
+              { id: 'op-2', title: 'Refactor Top-Tier Component Hierarchy', description: 'Implement unified state routing pattern for Landing and Authentication gates.', priority: 'Medium', status: 'COMPLETED' }
+            ];
+          });
 
-      const completedTasks = tasks.filter(t => t.status === 'COMPLETED');
-      const pendingTasks = tasks.filter(t => t.status === 'PENDING');
-      const progressPercentage = tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
+          React.useEffect(() => {
+            localStorage.setItem('tactical_ops_matrix', JSON.stringify(tasks));
+          }, [tasks]);
 
-      const handleAuthSubmit = (e) => {
-        e.preventDefault();
-        setAuthError('');
+          const completedTasks = tasks.filter(t => t.status === 'COMPLETED');
+          const pendingTasks = tasks.filter(t => t.status === 'PENDING');
+          const progressPercentage = tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
 
-        if (!username.trim() || !password.trim()) {
-          setAuthError('SYSTEM_ERROR: Input fields cannot verify empty array values.');
-          return;
-        }
+          const handleAuthSubmit = (e) => {
+            e.preventDefault();
+            setAuthError('');
 
-        if (isSignUp) {
-          localStorage.setItem('usr_sec_' + username, password);
-          setCurrentUser(username);
-          setView('DASHBOARD');
-        } else {
-          const record = localStorage.getItem('usr_sec_' + username);
-          if ((username === 'dev_core' && password === 'admin') || record === password) {
-            setCurrentUser(username === 'dev_core' ? 'DEVELOPER_NODE_01' : username);
-            setView('DASHBOARD');
-          } else {
-            setAuthError('SECURITY_BREACH: Invalid validation key mismatch pattern.');
-          }
-        }
-      };
+            if (!username.trim() || !password.trim()) {
+              setAuthError('SYSTEM_ERROR: Input fields cannot verify empty array values.');
+              return;
+            }
 
-      return (
-        <React.Fragment>
-          <style>{globalStyles}</style>
+            if (isSignUp) {
+              localStorage.setItem('usr_sec_' + username, password);
+              setCurrentUser(username);
+              setView('DASHBOARD');
+            } else {
+              const record = localStorage.getItem('usr_sec_' + username);
+              if ((username === 'dev_core' && password === 'admin') || record === password) {
+                setCurrentUser(username === 'dev_core' ? 'DEVELOPER_NODE_01' : username);
+                setView('DASHBOARD');
+              } else {
+                setAuthError('SECURITY_BREACH: Invalid validation key mismatch pattern.');
+              }
+            }
+          };
 
-          {view === 'LANDING' && (
-            <div className="landing-wrapper">
-              <nav className="landing-nav">
-                <div className="brand-logo">// CORE_STREAM_TRACKER</div>
-                <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>[ SYSTEM_ACCESS ]</button>
-              </nav>
-              <header className="hero-section">
-                <div className="hero-tag">// ENTERPRISE LOGISTICS PIPELINE</div>
-                <h1 className="hero-title">High-Throughput Task Optimization Architecture</h1>
-                <p className="hero-desc">Streamline developer state machines, audit dynamic workflow constraints, and manage real-time structural pipelines inside a highly optimized dashboard layer.</p>
-                <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-                  <button className="hud-btn btn-primary" onClick={() => { setIsSignUp(true); setView('AUTH'); }}>Initialize Free Node</button>
-                  <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>Authenticate Credentials</button>
+          return (
+            <React.Fragment>
+              {view === 'LANDING' && (
+                <div className="landing-wrapper">
+                  <nav className="landing-nav">
+                    <div className="brand-logo">// CORE_STREAM_TRACKER</div>
+                    <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>[ SYSTEM_ACCESS ]</button>
+                  </nav>
+                  <header className="hero-section">
+                    <div className="hero-tag">// ENTERPRISE LOGISTICS PIPELINE</div>
+                    <h1 className="hero-title">High-Throughput Task Optimization Architecture</h1>
+                    <p className="hero-desc">Streamline developer state machines, audit dynamic workflow constraints, and manage real-time structural pipelines inside a highly optimized dashboard layer.</p>
+                    <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+                      <button className="hud-btn btn-primary" onClick={() => { setIsSignUp(true); setView('AUTH'); }}>Initialize Free Node</button>
+                      <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>Authenticate Credentials</button>
+                    </div>
+                  </header>
+                  <section className="landing-grid">
+                    <div className="feature-card">
+                      <div className="feature-icon">[01]</div>
+                      <h3 className="feature-title">Telemetry Pipelines</h3>
+                      <p className="feature-desc">Visualize exact operational completion weights with state-driven graphical progress arrays instantly.</p>
+                    </div>
+                    <div className="feature-card">
+                      <div className="feature-icon">[02]</div>
+                      <h3 className="feature-title">Granular Criticality</h3>
+                      <p className="feature-desc">Isolate pipeline congestion issues with prioritized high, medium, and low security validation targets.</p>
+                    </div>
+                    <div className="feature-card">
+                      <div className="feature-icon">[03]</div>
+                      <h3 className="feature-title">Local Architecture</h3>
+                      <p className="feature-desc">Maintains data storage integrity using local sandboxed file arrays with zero cloud synchronization vulnerabilities.</p>
+                    </div>
+                  </section>
                 </div>
-              </header>
-              <section className="landing-grid">
-                <div className="feature-card"><h3>[01] Telemetry Pipelines</h3><p className="feature-desc">Visualize exact operational completion weights with state-driven graphical progress arrays instantly.</p></div>
-                <div className="feature-card"><h3>[02] Granular Criticality</h3><p className="feature-desc">Isolate pipeline congestion issues with prioritized high, medium, and low security validation targets.</p></div>
-                <div className="feature-card"><h3>[03] Local Architecture</h3><p className="feature-desc">Maintains data storage integrity using local sandboxed file arrays with zero cloud synchronization vulnerabilities.</p></div>
-              </section>
-            </div>
-          )}
+              )}
 
-          {view === 'AUTH' && (
-            <div className="auth-wrapper">
-              <div className="auth-card">
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>{isSignUp ? 'REGISTER_NEW_NODE' : 'ESTABLISH_SECURE_SESSION'}</div>
-                {authError && <div className="alert-banner">{authError}</div>}
-                <form onSubmit={handleAuthSubmit}>
-                  <div style={{ marginBottom: '16px' }}><label style={{ fontSize: '10px', color: '#94a3b8' }}>NODE ACCESS IDENTITY</label><input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="hud-input" /></div>
-                  <div style={{ marginBottom: '24px' }}><label style={{ fontSize: '10px', color: '#94a3b8' }}>SECURITY AUTHPASS PHRASE</label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" /></div>
-                  <button type="submit" className="hud-btn btn-primary" style={{ width: '100%' }}>{isSignUp ? 'GENERATE THREAD ASSETS' : 'DECRYPT SYSTEM DATA'}</button>
-                </form>
-                <div style={{ marginTop: '24px', textAlign: 'center' }}><button className="btn-text" onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>{isSignUp ? 'Have an existing node? Log in' : 'Need new configuration? Register'}</button></div>
-              </div>
-            </div>
-          )}
-
-          {view === 'DASHBOARD' && (
-            <div className="dashboard-container">
-              <aside className="nav-drawer">
-                <div>
-                  <div style={{ color: '#fff', paddingBottom: '16px' }}>// CORE_SYS_v2.0</div>
-                  <div className="drawer-menu">
-                    <div className={`drawer-item ${dashTab === 'METRICS' ? 'active' : ''}`} onClick={() => setDashTab('METRICS')}>ACTIVE_OPERATIONS</div>
-                    <div className={`drawer-item ${dashTab === 'ACCOMPLISHMENTS' ? 'active' : ''}`} onClick={() => setDashTab('ACCOMPLISHMENTS')}>ACCOMPLISHMENTS ({completedTasks.length})</div>
+              {view === 'AUTH' && (
+                <div className="auth-wrapper">
+                  <div className="auth-card">
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>
+                      {isSignUp ? 'REGISTER_NEW_NODE' : 'ESTABLISH_SECURE_SESSION'}
+                    </div>
+                    {authError && <div className="alert-banner">{authError}</div>}
+                    <form onSubmit={handleAuthSubmit}>
+                      <div style={{ marginBottom: '16px' }}>
+                        <label style={{ fontSize: '10px', color: '#94a3b8' }}>NODE ACCESS IDENTITY</label>
+                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="hud-input" placeholder="e.g., dev_core" />
+                      </div>
+                      <div style={{ marginBottom: '24px' }}>
+                        <label style={{ fontSize: '10px', color: '#94a3b8' }}>SECURITY AUTHPASS PHRASE</label>
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" placeholder="••••••••" />
+                      </div>
+                      <button type="submit" className="hud-btn btn-primary" style={{ width: '100%', padding: '12px' }}>
+                        {isSignUp ? 'GENERATE THREAD ASSETS' : 'DECRYPT SYSTEM DATA'}
+                      </button>
+                    </form>
+                    <div style={{ marginTop: '24px', textAlign: 'center' }}>
+                      <button className="btn-text" onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>
+                        {isSignUp ? 'Have an existing node? Log in' : 'Need new configuration? Register'}
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <button className="hud-btn" onClick={() => setView('LANDING')}>DISCONNECT</button>
-              </aside>
-              <main className="main-content">
-                <header className="hud-header">
-                  <div style={{ color: '#fff' }}>SYSTEM_STREAM_MONITOR // {dashTab === 'METRICS' ? 'CORE_METRICS' : 'VAULT'}</div>
-                  <div style={{ width: '200px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px' }}><span>RESOLVED:</span><span>{progressPercentage}%</span></div>
-                    <div className="progress-bar-container"><div className="progress-bar-fill" style={{ width: progressPercentage + '%' }}></div></div>
-                  </div>
-                </header>
+              )}
 
-                {dashTab === 'METRICS' ? (
-                  <div className="dashboard-grid">
-                    <section className="panel-box">
-                      <div className="stat-row"><span>TOTAL NODES:</span><span>{tasks.length}</span></div>
-                      <div className="stat-row"><span>PENDING:</span><span>{pendingTasks.length}</span></div>
-                      <div className="stat-row"><span>COMPLETED:</span><span>{completedTasks.length}</span></div>
-                    </section>
-                    <section>
-                      {pendingTasks.map(task => (
-                        <div key={task.id} className="op-card">
-                          <div style={{ display: 'flex', gap: '16px' }}>
-                            <div className="hud-checkbox" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'COMPLETED' } : t))}></div>
-                            <div>{task.title}</div>
-                          </div>
+              {view === 'DASHBOARD' && (
+                <div className="dashboard-container">
+                  <aside className="nav-drawer">
+                    <div>
+                      <div style={{ color: '#fff', paddingBottom: '16px', fontWeight: 800 }}>// CORE_SYS_v2.0</div>
+                      <div className="drawer-menu">
+                        <div className={"drawer-item " + (dashTab === 'METRICS' ? 'active' : '')} onClick={() => setDashTab('METRICS')}>ACTIVE_OPERATIONS</div>
+                        <div className={"drawer-item " + (dashTab === 'ACCOMPLISHMENTS' ? 'active' : '')} onClick={() => setDashTab('ACCOMPLISHMENTS')}>ACCOMPLISHMENTS ({completedTasks.length})</div>
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '11px', color: '#fff', marginBottom: '12px' }}>{currentUser}</div>
+                      <button className="hud-btn" style={{ width: '100%' }} onClick={() => setView('LANDING')}>DISCONNECT</button>
+                    </div>
+                  </aside>
+                  
+                  <main className="main-content">
+                    <header className="hud-header">
+                      <div style={{ color: '#fff', fontWeight: 700 }}>SYSTEM_STREAM_MONITOR // {dashTab === 'METRICS' ? 'CORE_METRICS' : 'VAULT'}</div>
+                      <div style={{ width: '200px' }}>
+                        <div style={{ display: 'flex', justifycontent: 'space-between', fontSize: '10px', marginBottom: '4px' }}>
+                          <span>RESOLVED: </span><span>{progressPercentage}%</span>
                         </div>
-                      ))}
-                    </section>
-                  </div>
-                ) : (
-                  <div className="panel-box">
-                    {completedTasks.map(task => (
-                      <div key={task.id} className="op-card" style={{ opacity: 0.7 }}>
-                        <div style={{ display: 'flex', gap: '16px' }}>
-                          <div className="hud-checkbox checked" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'PENDING' } : t))}></div>
-                          <div style={{ textDecoration: 'line-through' }}>{task.title}</div>
+                        <div className="progress-bar-container">
+                          <div className="progress-bar-fill" style={{ width: progressPercentage + '%' }}></div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </main>
-            </div>
-          )}
-        </React.Fragment>
-      );
-    }
+                    </header>
 
-    const container = document.getElementById('root');
-    const reactRoot = ReactDOM.createRoot(container);
-    reactRoot.render(<App />);
-</script>
+                    {dashTab === 'METRICS' ? (
+                      <div className="dashboard-grid">
+                        <section className="panel-box" style={{ height: 'fit-content' }}>
+                          <div className="stat-row"><span>TOTAL NODES:</span><span style={{ color: '#fff' }}>{tasks.length}</span></div>
+                          <div className="stat-row"><span>PENDING:</span><span style={{ color: '#fbbf24' }}>{pendingTasks.length}</span></div>
+                          <div className="stat-row"><span>COMPLETED:</span><span style={{ color: '#34d399' }}>{completedTasks.length}</span></div>
+                        </section>
+                        <section>
+                          {pendingTasks.length === 0 ? (
+                            <div style={{ padding: '48px', textalign: 'center', background: '#090f1e', border: '1px dashed rgba(0,255,204,0.2)', borderRadius: '8px', fontSize: '11px', color: '#4b5563' }}>
+                              // NO ACTIONS DETECTED IN STREAM.
+                            </div>
+                          ) : (
+                            pendingTasks.map(task => (
+                              <div key={task.id} className={"op-card prio-" + task.priority}>
+                                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                                  <div className="hud-checkbox" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'COMPLETED' } : t))}></div>
+                                  <div>
+                                    <div style={{ fontWeight: 700, color: '#fff' }}>{task.title}</div>
+                                    <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '4px' }}>{task.description}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </section>
+                      </div>
+                    ) : (
+                      <div className="panel-box">
+                        {completedTasks.length === 0 ? (
+                          <div style={{ padding: '48px', textalign: 'center', color: '#4b5563' }}>// NO LOGGED VAULT COMPLETIONS.</div>
+                        ) : (
+                          completedTasks.map(task => (
+                            <div key={task.id} className="op-card" style={{ opacity: 0.7 }}>
+                              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                                <div className="hud-checkbox checked" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'PENDING' } : t))}>
+                                  <span style={{ color: '#030712', fontSize: '10px', fontWeight: 900 }}>✓</span>
+                                </div>
+                                <div style={{ textDecoration: 'line-through', color: '#94a3b8' }}>{task.title}</div>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+                  </main>
+                </div>
+              )}
+            </React.Fragment>
+          );
+        }
+
+        const container = document.getElementById('root');
+        const reactRoot = ReactDOM.createRoot(container);
+        reactRoot.render(<App />);
+    </script>
+</body>
+</html>
