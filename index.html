@@ -105,33 +105,69 @@
         margin: 0;
       }
 
-      /* Authentication Form Card */
+      /* Authentication Form Card CSS Rules */
       .auth-wrapper {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
-        background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05), transparent 400px);
+        padding: 40px 20px;
+        background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05), transparent 500px);
+        box-sizing: border-box;
       }
       .auth-card {
         background: #0f1626;
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 16px;
         width: 100%;
-        max-width: 400px;
-        padding: 40px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        max-width: 480px;
+        padding: 36px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        box-sizing: border-box;
       }
-      .auth-note-box {
-        background: rgba(99, 102, 241, 0.05);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 8px;
-        padding: 12px 14px;
-        margin-bottom: 20px;
+      .auth-split-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 480px) {
+        .auth-split-row {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+      }
+      .input-icon-wrapper {
+        position: relative;
+        margin-top: 6px;
+      }
+      .input-inline-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: #6b7280;
+        cursor: pointer;
         font-size: 12px;
+        padding: 4px;
+      }
+      .input-inline-btn:hover {
+        color: #818cf8;
+      }
+      .auth-utility-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 16px 0 24px 0;
+        font-size: 13px;
+      }
+      .auth-checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         color: #9ca3af;
-        line-height: 1.4;
+        cursor: pointer;
       }
 
       /* Dashboard Container Matrix */
@@ -193,7 +229,7 @@
         color: #ffffff;
       }
 
-      /* Main Dynamic 3-Column Layout */
+      /* Main Dynamic Layout Grid Systems */
       .main-content { 
         flex-grow: 1; 
         padding: 32px 40px; 
@@ -219,11 +255,18 @@
         gap: 24px; 
         align-items: start; 
       }
+      .archive-layout-grid {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 24px;
+        align-items: start;
+      }
       @media (max-width: 1400px) {
         .dashboard-layout-grid { grid-template-columns: 320px 1fr; }
         .right-activity-column { grid-column: span 2; }
+        .archive-layout-grid { grid-template-columns: 1fr; }
       }
-      @media (max-width: 1000px) {
+      @media (max-width: 1400px) {
         .dashboard-layout-grid { grid-template-columns: 1fr; }
         .right-activity-column { grid-column: span 1; }
       }
@@ -362,8 +405,17 @@
           const [authError, setAuthError] = React.useState('');
           const [currentUser, setCurrentUser] = React.useState(null);
 
-          const [username, setUsername] = React.useState('');
+          // Advanced Inputs Map ported from older project captures
+          const [fullName, setFullName] = React.useState('');
+          const [email, setEmail] = React.useState('');
+          const [phone, setPhone] = React.useState('');
           const [password, setPassword] = React.useState('');
+          const [confirmPassword, setConfirmPassword] = React.useState('');
+          const [rememberMe, setRememberMe] = React.useState(false);
+          
+          // Visibility controls for text masks
+          const [showPass, setShowPass] = React.useState(false);
+          const [showConfirm, setShowConfirm] = React.useState(false);
 
           // Main Interactive Layout Controls
           const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -399,9 +451,9 @@
               console.error("Local data cache reset:", e);
             }
             return [
-              { id: 't-1', title: 'Review Fiber Optics Link Budget Constraints', description: 'Analyze single-mode path attenuation calculations and connector loss factors.', priority: 'High', status: 'PENDING' },
-              { id: 't-2', title: 'Audit Campus Marketplace Transaction Handlers', description: 'Ensure SQLite sync logic functions reliably against local XAMPP/MySQL backend systems.', priority: 'High', status: 'PENDING' },
-              { id: 't-3', title: 'Complete Drawing Board Proportions Drills', description: 'Execute daily timed sketchbook structural layout constructions.', priority: 'Low', status: 'COMPLETED' }
+              { id: 't-1', title: 'Prepare Final Project Mockups', description: 'Design layout wireframes using UI tools for submission.', priority: 'High', status: 'PENDING' },
+              { id: 't-2', title: 'Set Up Initial React Application', description: 'Configure base project repository and verify live host links.', priority: 'Medium', status: 'PENDING' },
+              { id: 't-3', title: 'Review Database Synchronization Logic', description: 'Audit offline storage rules and verify dynamic data components work.', priority: 'High', status: 'COMPLETED' }
             ];
           });
 
@@ -448,32 +500,54 @@
             e.preventDefault();
             setAuthError('');
 
-            if (!username.trim() || !password.trim()) {
-              setAuthError('Please fill out all login fields.');
-              return;
-            }
-
             if (isSignUp) {
-              localStorage.setItem('student_usr_' + username, password);
-              setCurrentUser(username);
+              if (!fullName.trim() || !email.trim() || !phone.trim() || !password.trim() || !confirmPassword.trim()) {
+                setAuthError('All registration form inputs are strictly required.');
+                return;
+              }
+              if (password !== confirmPassword) {
+                setAuthError('Password confirmation string mismatch.');
+                return;
+              }
+
+              // Save registration state locally
+              localStorage.setItem('student_usr_' + email, JSON.stringify({ password, fullName, phone }));
+              setCurrentUser(fullName);
               setView('DASHBOARD');
-              pushActivity(`Registered new local user profile: ${username}`);
+              pushActivity(`Registered account credentials for ${fullName}`);
             } else {
-              const record = localStorage.getItem('student_usr_' + username);
-              if ((username === 'student_dev' && password === 'admin') || record === password) {
-                setCurrentUser(username === 'student_dev' ? 'Student Workspace' : username);
+              if (!email.trim() || !password.trim()) {
+                setAuthError('Please enter both identity email and password fields.');
+                return;
+              }
+
+              const record = localStorage.getItem('student_usr_' + email);
+              if (email === 'student_dev@student.edu' && password === 'admin') {
+                setCurrentUser('Student Workspace');
                 setView('DASHBOARD');
-                pushActivity(`User session authorized.`);
+                pushActivity(`Authorized developer admin workspace session.`);
+              } else if (record) {
+                const parsedUserData = JSON.parse(record);
+                if (parsedUserData.password === password) {
+                  setCurrentUser(parsedUserData.fullName || email);
+                  setView('DASHBOARD');
+                  pushActivity(`User session authorized securely via local cache.`);
+                } else {
+                  setAuthError('Security rejection: Password verification failed.');
+                }
               } else {
-                setAuthError('Access denied: Invalid username or password.');
+                setAuthError('No corresponding record matched inside browser local sandbox storage.');
               }
             }
           };
 
           const handleLogout = () => {
             setCurrentUser(null);
-            setUsername('');
+            setEmail('');
             setPassword('');
+            setFullName('');
+            setPhone('');
+            setConfirmPassword('');
             setDrawerOpen(false);
             setView('LANDING');
           };
@@ -506,6 +580,13 @@
             const targets = tasks.find(t => t.id === id);
             setTasks(tasks.filter(t => t.id !== id));
             if (targets) pushActivity(`Permanently deleted task: "${targets.title}"`);
+          };
+
+          const handleWipeArchive = () => {
+            if (window.confirm("Are you sure you want to permanently clear your historical log records?")) {
+              setTasks(tasks.filter(t => t.status !== 'COMPLETED'));
+              pushActivity("Cleared archived performance history.");
+            }
           };
 
           return (
@@ -552,45 +633,97 @@
                 </div>
               )}
 
-              {/* AUTHENTICATION GATEWAY VIEW */}
+              {/* REBUILT EXPANDED AUTHENTICATION LAYOUT */}
               {view === 'AUTH' && (
                 <div className="auth-wrapper">
                   <div className="auth-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <div style={{ fontSize: '18px', fontWeight: 600, color: '#fff' }}>
-                        {isSignUp ? 'Create Local Account' : 'Sign In to Dashboard'}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ fontSize: '20px', fontWeight: 700, color: '#fff', letterSpacing: '-0.4px' }}>
+                        {isSignUp ? 'Create Student Account' : 'Welcome back! Log in to continue.'}
                       </div>
                       <button className="delete-btn" onClick={() => setView('LANDING')}>← Home</button>
                     </div>
                     
-                    {/* Clear, plain-language onboarding/security explanations */}
-                    {isSignUp ? (
-                      <div className="auth-note-box">
-                        <strong>🔒 Private Local Storage:</strong> Creating an account saves your credentials straight to your own browser's storage cache. No cloud servers, no data leaks.
-                      </div>
-                    ) : (
-                      <div className="auth-note-box">
-                        <strong>💡 Quick Sign In:</strong> Enter your saved credentials to pull up your workflow board. You can also log in with the default profile using <code>student_dev</code> and password <code>admin</code>.
-                      </div>
-                    )}
+                    <p style={{ fontSize: '13px', color: '#9ca3af', margin: '0 0 20px 0' }}>
+                      {isSignUp ? 'Create your account to start managing active campus targets.' : 'Enter your local-first pipeline credentials to open workspace.'}
+                    </p>
 
-                    {authError && <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#ef4444', padding: '10px', borderRadius: '6px', fontSize: '12px', marginBottom: '16px' }}>{authError}</div>}
-                    <form onSubmit={handleAuthSubmit}>
-                      <div style={{ marginBottom: '14px' }}>
-                        <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af' }}>USERNAME</label>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="hud-input" placeholder="e.g., student_dev" />
+                    {authError && <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#ef4444', padding: '10px 12px', borderRadius: '6px', fontSize: '12.5px', marginBottom: '16px', lineHeight: '1.4' }}>{authError}</div>}
+                    
+                    <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                      
+                      {isSignUp && (
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', letterSpacing: '0.5px' }}>FULL NAME</label>
+                          <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="hud-input" placeholder="Enter your full name" required />
+                        </div>
+                      )}
+
+                      {isSignUp ? (
+                        <div className="auth-split-row">
+                          <div>
+                            <label style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', letterSpacing: '0.5px' }}>STUDENT EMAIL</label>
+                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="hud-input" placeholder="you@student.edu" required />
+                          </div>
+                          <div>
+                            <label style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', letterSpacing: '0.5px' }}>PHONE NUMBER</label>
+                            <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} className="hud-input" placeholder="07xxxxxxxx" required />
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', letterSpacing: '0.5px' }}>STUDENT EMAIL</label>
+                          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="hud-input" placeholder="e.g., student_dev@student.edu" required />
+                        </div>
+                      )}
+
+                      {isSignUp ? (
+                        <div className="auth-split-row">
+                          <div>
+                            <label style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', letterSpacing: '0.5px' }}>PASSWORD</label>
+                            <div className="input-icon-wrapper">
+                              <input type={showPass ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" style={{ marginTop: 0 }} placeholder="Create password" required />
+                              <button type="button" className="input-inline-btn" onClick={() => setShowPass(!showPass)}>{showPass ? "Hide" : "Show"}</button>
+                            </div>
+                          </div>
+                          <div>
+                            <label style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', letterSpacing: '0.5px' }}>CONFIRM PASSWORD</label>
+                            <div className="input-icon-wrapper">
+                              <input type={showConfirm ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="hud-input" style={{ marginTop: 0 }} placeholder="Confirm password" required />
+                              <button type="button" className="input-inline-btn" onClick={() => setShowConfirm(!showConfirm)}>{showConfirm ? "Hide" : "Show"}</button>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', letterSpacing: '0.5px' }}>PASSWORD</label>
+                          <div className="input-icon-wrapper">
+                            <input type={showPass ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" style={{ marginTop: 0 }} placeholder="Enter your workspace security pass" required />
+                            <button type="button" className="input-inline-btn" onClick={() => setShowPass(!showPass)}>{showPass ? "Hide" : "Show"}</button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* PORTED COMPONENT CONTROLS FROM OLD OVERVIEWS */}
+                      <div className="auth-utility-row">
+                        <label className="auth-checkbox-label">
+                          <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} style={{ accentColor: '#6366f1', width: '15px', height: '15px' }} />
+                          Remember me
+                        </label>
+                        <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Local password profiles reset via application storage wipes."); }} style={{ color: '#6366f1', textDecoration: 'none', fontWeight: 500 }}>Forgot password?</a>
                       </div>
-                      <div style={{ marginBottom: '20px' }}>
-                        <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af' }}>PASSWORD</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" placeholder="••••••••" />
-                      </div>
-                      <button type="submit" className="hud-btn btn-primary" style={{ width: '100%', padding: '11px' }}>
-                        {isSignUp ? 'Create Local Profile' : 'Open Workspace'}
+
+                      <button type="submit" className="hud-btn btn-primary" style={{ width: '100%', padding: '12px', fontSize: '14px' }}>
+                        {isSignUp ? 'Create Matrix Account' : 'Log In'}
                       </button>
                     </form>
-                    <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                      <button className="delete-btn" style={{ fontSize: '13px' }} onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>
-                        {isSignUp ? 'Already have an account? Sign in instead' : 'Need a separate profile? Register an account'}
+
+                    <div style={{ marginTop: '24px', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '16px' }}>
+                      <span style={{ color: '#6b7280', fontSize: '13px' }}>
+                        {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+                      </span>
+                      <button className="delete-btn" style={{ fontSize: '13px', color: '#818cf8', padding: 0, fontWeight: 600 }} onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>
+                        {isSignUp ? 'Sign up here' : 'Sign up here'}
                       </button>
                     </div>
                   </div>
@@ -605,7 +738,7 @@
                   {/* Collapsible Slide-Out Navigation Compartment */}
                   <aside className={`nav-drawer ${drawerOpen ? 'open' : ''}`}>
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', justifycontent: 'space-between', alignitems: 'center' }}>
                         <div className="brand-logo" onClick={() => handleLogout()}>⚡ Task<span>Matrix</span></div>
                         <button className="delete-btn" style={{ fontSize: '18px' }} onClick={() => setDrawerOpen(false)}>×</button>
                       </div>
@@ -784,27 +917,68 @@
 
                       </div>
                     ) : (
-                      /* LOGS LEDGER VIEW */
-                      <div className="panel-box">
-                        <div className="panel-title">Archived Task Records Storage</div>
-                        {completedTasks.length === 0 ? (
-                          <div style={{ padding: '60px 20px', textAlign: 'center', color: '#6b7280', fontSize: '13px' }}>No completed tasks saved inside archive memory logs.</div>
-                        ) : (
-                          completedTasks.map(task => (
-                            <div key={task.id} className="op-card" style={{ background: 'rgba(15, 22, 38, 0.4)' }}>
-                              <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                                <div className="hud-checkbox checked" onClick={() => handleToggleTaskStatus(task.id, task.status)}>
-                                  <span style={{ color: '#ffffff', fontSize: '10px', fontWeight: 700 }}>✓</span>
-                                </div>
-                                <div>
-                                  <div style={{ textDecoration: 'line-through', color: '#6b7280', fontSize: '15px' }}>{task.title}</div>
-                                  <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '2px' }}>{task.description}</div>
-                                </div>
-                              </div>
-                              <button className="delete-btn" onClick={() => handlePurgeTask(task.id)}>Delete</button>
+                      /* BALANCED TWO-COLUMN ARCHIVE LEDGER VIEW */
+                      <div className="archive-layout-grid">
+                        
+                        {/* LEFT HAND PANEL: COMPLETED WORK CARDS CONTAINER */}
+                        <div className="panel-box">
+                          <div className="panel-title" style={{ marginBottom: '20px' }}>
+                            <span>Archived Task Records Storage ({completedTasks.length})</span>
+                          </div>
+                          
+                          {completedTasks.length === 0 ? (
+                            <div style={{ padding: '60px 20px', textAlign: 'center', color: '#6b7280', fontSize: '13px', border: '1px dashed rgba(255,255,255,0.04)', borderRadius: '8px' }}>
+                              No completed tasks saved inside archive memory logs.
                             </div>
-                          ))
-                        )}
+                          ) : (
+                            completedTasks.map(task => (
+                              <div key={task.id} className="op-card" style={{ background: 'rgba(15, 22, 38, 0.4)' }}>
+                                <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                                  <div className="hud-checkbox checked" onClick={() => handleToggleTaskStatus(task.id, task.status)}>
+                                    <span style={{ color: '#ffffff', fontSize: '10px', fontWeight: 700 }}>✓</span>
+                                  </div>
+                                  <div>
+                                    <div style={{ textDecoration: 'line-through', color: '#6b7280', fontSize: '15px' }}>{task.title}</div>
+                                    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '2px' }}>{task.description}</div>
+                                  </div>
+                                </div>
+                                <button className="delete-btn" onClick={() => handlePurgeTask(task.id)}>Delete</button>
+                              </div>
+                            ))
+                          )}
+                        </div>
+
+                        {/* RIGHT HAND PANEL: HISTORICAL TELEMETRY MATRIX & CONTROLS */}
+                        <div className="panel-stack">
+                          <section className="panel-box">
+                            <div className="panel-title">Archive Statistics</div>
+                            <div className="stat-row"><span>Lifetime Completed</span><span>{completedTasks.length} Units</span></div>
+                            <div className="stat-row"><span>Sync Health</span><span style={{ color: '#34d399' }}>100% Cached</span></div>
+                            <div className="stat-row"><span>Storage Overhead</span><span>{JSON.stringify(tasks).length} Bytes</span></div>
+                          </section>
+
+                          <section className="panel-box">
+                            <div className="panel-title">Maintenance Tools</div>
+                            <p style={{ fontSize: '12px', color: '#9ca3af', lineHeight: '1.4', margin: '0 0 14px 0' }}>
+                              Need to clean out historical workflows? Purging your archive permanently removes completed records from local state memory.
+                            </p>
+                            <button 
+                              className="hud-btn" 
+                              disabled={completedTasks.length === 0}
+                              style={{ 
+                                width: '100%', 
+                                background: completedTasks.length === 0 ? 'rgba(255,255,255,0.02)' : 'rgba(239, 68, 68, 0.08)', 
+                                borderColor: completedTasks.length === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(239, 68, 68, 0.2)', 
+                                color: completedTasks.length === 0 ? '#4b5563' : '#f87171',
+                                cursor: completedTasks.length === 0 ? 'not-allowed' : 'pointer'
+                              }} 
+                              onClick={handleWipeArchive}
+                            >
+                              Purge Completed Records
+                            </button>
+                          </section>
+                        </div>
+
                       </div>
                     )}
                   </main>
