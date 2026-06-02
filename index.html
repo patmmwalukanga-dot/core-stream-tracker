@@ -5,32 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Task Dashboard</title>
     
-    <!-- Stable Production CDN Scripts -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
-      
-      :root {
-        --bg-main: #0b0f19;
-        --bg-panel: #111827;
-        --bg-card: #1f2937;
-        --accent-primary: #6366f1; /* Indigo */
-        --accent-success: #10b981; /* Emerald */
-        --accent-error: #ef4444;   /* Rose */
-        --text-main: #f3f4f6;
-        --text-muted: #9ca3af;
-        --border-color: rgba(255, 255, 255, 0.06);
-        --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-      }
 
       body { 
         margin: 0; 
-        background-color: var(--bg-main); 
-        color: var(--text-main); 
+        background-color: #0b0f19; 
+        color: #f3f4f6; 
         font-family: 'Inter', sans-serif;
         -webkit-font-smoothing: antialiased;
       }
@@ -45,7 +30,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 20px 6%;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         background: rgba(11, 15, 25, 0.7);
         backdrop-filter: blur(12px);
       }
@@ -53,13 +38,13 @@
         font-weight: 700;
         font-size: 18px;
         letter-spacing: -0.5px;
-        color: #fff;
+        color: #ffffff;
         display: flex;
         align-items: center;
         gap: 8px;
       }
       .brand-logo span {
-        color: var(--accent-primary);
+        color: #6366f1;
       }
       .hero-section {
         text-align: center;
@@ -87,7 +72,7 @@
         color: #ffffff;
       }
       .hero-desc {
-        color: var(--text-muted);
+        color: #9ca3af;
         font-size: 18px;
         line-height: 1.6;
         max-width: 600px;
@@ -102,19 +87,19 @@
         margin: 0 auto;
       }
       .feature-card {
-        background: var(--bg-panel);
-        border: 1px solid var(--border-color);
+        background: #111827;
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 14px;
         padding: 32px;
-        box-shadow: var(--shadow-sm);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
       .feature-card:hover {
         transform: translateY(-2px);
-        box-shadow: var(--shadow-lg);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       }
       .feature-icon {
-        color: var(--accent-primary);
+        color: #6366f1;
         font-size: 18px;
         font-weight: 700;
         margin-bottom: 16px;
@@ -124,10 +109,10 @@
         font-size: 18px;
         font-weight: 600;
         margin: 0 0 10px 0;
-        color: #fff;
+        color: #ffffff;
       }
       .feature-desc {
-        color: var(--text-muted);
+        color: #9ca3af;
         font-size: 14px;
         line-height: 1.6;
       }
@@ -142,20 +127,20 @@
         background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05), transparent 400px);
       }
       .auth-card {
-        background: var(--bg-panel);
-        border: 1px solid var(--border-color);
+        background: #111827;
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 16px;
         width: 100%;
         max-width: 400px;
         padding: 40px;
-        box-shadow: var(--shadow-lg);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       }
 
-      /* Sleek SaaS Button Frameworks */
+      /* Sleek Buttons */
       .hud-btn { 
         background: #1f2937;
-        border: 1px solid var(--border-color);
-        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #ffffff;
         padding: 10px 22px; 
         font-size: 14px; 
         font-weight: 500; 
@@ -164,18 +149,18 @@
         transition: all 0.2s ease;
       }
       .hud-btn:hover { background: #2d3748; }
-      .btn-primary { background: var(--accent-primary); color: #fff; border: none; font-weight: 600; }
+      .btn-primary { background: #6366f1; color: #ffffff; border: none; font-weight: 600; }
       .btn-primary:hover { background: #4f46e5; }
-      .btn-text { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; }
-      .btn-text:hover { color: #fff; text-decoration: underline; }
+      .btn-text { background: transparent; border: none; color: #9ca3af; cursor: pointer; font-size: 14px; }
+      .btn-text:hover { color: #ffffff; text-decoration: underline; }
       
       .hud-input, .hud-select, .hud-textarea { 
         width: 100%; 
         padding: 11px 14px; 
         background: #1f2937; 
-        border: 1px solid var(--border-color); 
+        border: 1px solid rgba(255, 255, 255, 0.06); 
         border-radius: 8px; 
-        color: #fff; 
+        color: #ffffff; 
         box-sizing: border-box; 
         margin-top: 6px; 
         font-family: inherit;
@@ -184,7 +169,7 @@
       }
       .hud-input:focus, .hud-select:focus, .hud-textarea:focus {
         outline: none;
-        border-color: var(--accent-primary);
+        border-color: #6366f1;
       }
       .hud-textarea { resize: vertical; height: 90px; }
 
@@ -192,60 +177,64 @@
       .dashboard-container { display: flex; min-height: 100vh; }
       .nav-drawer {
         width: 260px;
-        background: var(--bg-panel);
-        border-right: 1px solid var(--border-color);
+        background: #111827;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         padding: 32px 20px;
+        box-sizing: border-box;
       }
       .drawer-menu { display: flex; flex-direction: column; gap: 6px; margin-top: 32px; }
       .drawer-item {
         padding: 12px 16px;
         border-radius: 8px;
         cursor: pointer;
-        color: var(--text-muted);
+        color: #9ca3af;
         font-size: 14px;
         font-weight: 500;
         transition: all 0.2s ease;
       }
       .drawer-item.active {
         background: rgba(99, 102, 241, 0.1);
-        color: #fff;
+        color: #ffffff;
         font-weight: 600;
       }
       .drawer-item:hover:not(.active) {
         background: rgba(255, 255, 255, 0.03);
-        color: #fff;
+        color: #ffffff;
       }
-      .main-content { flex-grow: 1; padding: 40px; box-sizing: border-box; max-width: 1400px; margin: 0 auto; width: 100%; }
+      .main-content { flex-grow: 1; padding: 40px; box-sizing: border-box; max-width: 1400px; margin: 0 auto; width: calc(100% - 260px); }
       
       .progress-bar-container { background: rgba(255,255,255,0.06); border-radius: 9999px; height: 8px; width: 100%; margin-top: 10px; overflow: hidden; }
-      .progress-bar-fill { background: var(--accent-success); height: 100%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+      .progress-bar-fill { background: #10b981; height: 100%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
-      .alert-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--accent-error); padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-size: 13px; }
-      .hud-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 24px; margin-bottom: 32px; }
+      .alert-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-size: 13px; }
+      .hud-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 24px; margin-bottom: 32px; }
       
       .dashboard-grid { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
+      @media (max-width: 900px) {
+        .dashboard-grid { grid-template-columns: 1fr; }
+      }
       .left-column { display: flex; flex-direction: column; gap: 32px; }
       
-      .panel-box { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); }
-      .panel-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+      .panel-box { background: #111827; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
+      .panel-title { font-size: 13px; font-weight: 600; color: #ffffff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
       
-      .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; color: var(--text-muted); }
-      .stat-row span:last-child { color: #fff; font-weight: 600; }
+      .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; color: #9ca3af; }
+      .stat-row span:last-child { color: #ffffff; font-weight: 600; }
       
       /* Premium Smooth Task Cards */
       .op-card { 
-        background: var(--bg-panel); 
-        border: 1px solid var(--border-color);
+        background: #111827; 
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 12px; 
         padding: 20px 24px; 
         display: flex; 
         justify-content: space-between; 
         align-items: center; 
         margin-bottom: 16px; 
-        box-shadow: var(--shadow-sm);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         transition: border-color 0.2s ease;
       }
       .op-card:hover {
@@ -277,13 +266,13 @@
         flex-shrink: 0;
         transition: all 0.2s ease;
       }
-      .hud-checkbox:hover { border-color: var(--accent-primary); }
-      .hud-checkbox.checked { background: var(--accent-success); border-color: var(--accent-success); }
+      .hud-checkbox:hover { border-color: #6366f1; }
+      .hud-checkbox.checked { background: #10b981; border-color: #10b981; }
       
       .delete-btn {
         background: transparent;
         border: none;
-        color: var(--text-muted);
+        color: #9ca3af;
         cursor: pointer;
         font-family: inherit;
         font-size: 13px;
@@ -291,7 +280,7 @@
         padding: 6px 12px;
         border-radius: 6px;
       }
-      .delete-btn:hover { color: var(--accent-error); background: rgba(239, 68, 68, 0.08); }
+      .delete-btn:hover { color: #ef4444; background: rgba(239, 68, 68, 0.08); }
     </style>
 </head>
 <body>
@@ -387,7 +376,7 @@
                   <header className="hero-section">
                     <div className="hero-tag">Academic Workflow Manager</div>
                     <h1 className="hero-title">Track your academic projects flawlessly</h1>
-                    <p className="hero-desc">Organize assignments, build custom task boards, and review real-time analytics of your completion records inside a beautiful professional workspace.</p>
+                    <p style={{ color: '#9ca3af' }} className="hero-desc">Organize assignments, build custom task boards, and review real-time analytics of your completion records inside a beautiful professional workspace.</p>
                     <div style={{ display: 'flex', gap: '14px', justifyContent: 'center' }}>
                       <button className="hud-btn btn-primary" onClick={() => { setIsSignUp(true); setView('AUTH'); }}>Create Account</button>
                       <button className="hud-btn" onClick={() => { setIsSignUp(false); setView('AUTH'); }}>View Dashboard</button>
@@ -419,15 +408,15 @@
                     <div style={{ fontSize: '18px', fontWeight: 600, color: '#fff', marginBottom: '6px' }}>
                       {isSignUp ? 'Create Workspace' : 'Sign In'}
                     </div>
-                    <p style={{ color: var(--text-muted), fontSize: '14px', margin: '0 0 24px 0' }}>Enter your configuration access credentials below.</p>
+                    <p style={{ color: '#9ca3af', fontSize: '14px', margin: '0 0 24px 0' }}>Enter your configuration access credentials below.</p>
                     {authError && <div className="alert-banner">{authError}</div>}
                     <form onSubmit={handleAuthSubmit}>
                       <div style={{ marginBottom: '18px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 500, color: var(--text-muted) }}>USERNAME</label>
+                        <label style={{ fontSize: '12px', fontWeight: 500, color: '#9ca3af' }}>USERNAME</label>
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="hud-input" placeholder="student_dev" />
                       </div>
                       <div style={{ marginBottom: '24px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 500, color: var(--text-muted) }}>PASSWORD</label>
+                        <label style={{ fontSize: '12px', fontWeight: 500, color: '#9ca3af' }}>PASSWORD</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" placeholder="••••••••" />
                       </div>
                       <button type="submit" className="hud-btn btn-primary" style={{ width: '100%', padding: '12px' }}>
@@ -454,7 +443,7 @@
                       </div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '13px', color: '#fff', marginBottom: '14px', paddingLeft: '16px', borderLeft: '2px solid var(--accent-primary)' }}>{currentUser}</div>
+                      <div style={{ fontSize: '13px', color: '#fff', marginBottom: '14px', paddingLeft: '16px', borderLeft: '2px solid #6366f1' }}>{currentUser}</div>
                       <button className="hud-btn" style={{ width: '100%' }} onClick={() => setView('LANDING')}>Disconnect</button>
                     </div>
                   </aside>
@@ -465,12 +454,12 @@
                         <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0, color: '#fff' }}>
                           {dashTab === 'METRICS' ? 'Workspace Dashboard' : 'Archive History'}
                         </h1>
-                        <p style={{ color: var(--text-muted), fontSize: '14px', margin: '4px 0 0 0' }}>Review, configure, and monitor ongoing academic assignments.</p>
+                        <p style={{ color: '#9ca3af', fontSize: '14px', margin: '4px 0 0 0' }}>Review, configure, and monitor ongoing academic assignments.</p>
                       </div>
                       <div style={{ width: '240px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 500 }}>
-                          <span style={{ color: var(--text-muted) }}>Total Progress</span>
-                          <span style={{ color: var(--accent-success), fontWeight: 600 }}>{progressPercentage}%</span>
+                          <span style={{ color: '#9ca3af' }}>Total Progress</span>
+                          <span style={{ color: '#10b981', fontWeight: 600 }}>{progressPercentage}%</span>
                         </div>
                         <div className="progress-bar-container">
                           <div className="progress-bar-fill" style={{ width: progressPercentage + '%' }}></div>
@@ -485,22 +474,22 @@
                             <div className="panel-title">Task Metrics</div>
                             <div className="stat-row"><span>Total Tasks</span><span>{tasks.length}</span></div>
                             <div className="stat-row"><span>Pending</span><span style={{ color: '#fbbf24' }}>{pendingTasks.length}</span></div>
-                            <div className="stat-row"><span>Completed</span><span style={{ color: 'var(--accent-success)' }}>{completedTasks.length}</span></div>
+                            <div className="stat-row"><span>Completed</span><span style={{ color: '#10b981' }}>{completedTasks.length}</span></div>
                           </section>
 
                           <section className="panel-box">
                             <div className="panel-title">Create New Task</div>
                             <form onSubmit={handleAddTask} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                               <div>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: var(--text-muted) }}>TASK TITLE</label>
+                                <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af' }}>TASK TITLE</label>
                                 <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="hud-input" placeholder="e.g., Study for Optics Exam" required />
                               </div>
                               <div>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: var(--text-muted) }}>DESCRIPTION</label>
+                                <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af' }}>DESCRIPTION</label>
                                 <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value)} className="hud-textarea" placeholder="Brief details about deadlines or materials..."></textarea>
                               </div>
                               <div>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: var(--text-muted) }}>PRIORITY LEVEL</label>
+                                <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af' }}>PRIORITY LEVEL</label>
                                 <select value={newPrio} onChange={(e) => setNewPrio(e.target.value)} className="hud-select">
                                   <option value="High">High Urgency</option>
                                   <option value="Medium">Medium Urgency</option>
@@ -513,9 +502,9 @@
                         </div>
 
                         <section>
-                          <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: var(--text-muted), textTransform: 'uppercase', letterSpacing: '0.5px' }}>Current Running Tasks ({pendingTasks.length})</div>
+                          <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Current Running Tasks ({pendingTasks.length})</div>
                           {pendingTasks.length === 0 ? (
-                            <div style={{ padding: '64px', textAlign: 'center', background: 'var(--bg-panel)', border: '1px dashed var(--border-color)', borderRadius: '12px', fontSize: '14px', color: var(--text-muted) }}>
+                            <div style={{ padding: '64px', textAlign: 'center', background: '#111827', border: '1px dashed rgba(255, 255, 255, 0.06)', borderRadius: '12px', fontSize: '14px', color: '#9ca3af' }}>
                               No active tasks found. Use the configuration form to add one.
                             </div>
                           ) : (
@@ -524,8 +513,8 @@
                                 <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                                   <div className="hud-checkbox" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'COMPLETED' } : t))}></div>
                                   <div>
-                                    <div style={{ fontWeight: 600, color: '#fff', fontSize: '16px', letterSpacing: '-0.3px' }}>{task.title}</div>
-                                    <div style={{ fontSize: '14px', color: var(--text-muted), marginTop: '4px', lineHeight: '1.5' }}>{task.description}</div>
+                                    <div style={{ fontWeight: 600, color: '#ffffff', fontSize: '16px', letterSpacing: '-0.3px' }}>{task.title}</div>
+                                    <div style={{ fontSize: '14px', color: '#9ca3af', marginTop: '4px', lineHeight: '1.5' }}>{task.description}</div>
                                     <span className="priority-badge">{task.priority} Priority</span>
                                   </div>
                                 </div>
@@ -539,16 +528,16 @@
                       <div className="panel-box">
                         <div className="panel-title">Completed Work Archive</div>
                         {completedTasks.length === 0 ? (
-                          <div style={{ padding: '64px', textAlign: 'center', color: var(--text-muted), fontSize: '14px' }}>No historic metrics saved in the archive logs.</div>
+                          <div style={{ padding: '64px', textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>No historic metrics saved in the archive logs.</div>
                         ) : (
                           completedTasks.map(task => (
                             <div key={task.id} className="op-card" style={{ opacity: 0.65 }}>
                               <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                                 <div className="hud-checkbox checked" onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, status: 'PENDING' } : t))}>
-                                  <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>
+                                  <span style={{ color: '#ffffff', fontSize: '11px', fontWeight: 700 }}>✓</span>
                                 </div>
                                 <div>
-                                  <div style={{ textDecoration: 'line-through', color: var(--text-muted), fontSize: '16px', fontWeight: 500 }}>{task.title}</div>
+                                  <div style={{ textDecoration: 'line-through', color: '#9ca3af', fontSize: '16px', fontWeight: 500 }}>{task.title}</div>
                                   <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '2px' }}>{task.description}</div>
                                 </div>
                               </div>
