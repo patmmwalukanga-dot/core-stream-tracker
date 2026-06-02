@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Task Dashboard</title>
     
+    <!-- Stable Production CDN Scripts -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -121,6 +122,16 @@
         max-width: 400px;
         padding: 40px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+      .auth-note-box {
+        background: rgba(99, 102, 241, 0.05);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-bottom: 20px;
+        font-size: 12px;
+        color: #9ca3af;
+        line-height: 1.4;
       }
 
       /* Dashboard Container Matrix */
@@ -547,11 +558,22 @@
                   <div className="auth-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                       <div style={{ fontSize: '18px', fontWeight: 600, color: '#fff' }}>
-                        {isSignUp ? 'Create Workspace Account' : 'Sign In to Workspace'}
+                        {isSignUp ? 'Create Local Account' : 'Sign In to Dashboard'}
                       </div>
                       <button className="delete-btn" onClick={() => setView('LANDING')}>← Home</button>
                     </div>
-                    <p style={{ color: '#9ca3af', fontSize: '13px', margin: '0 0 20px 0' }}>Enter your security details below to continue.</p>
+                    
+                    {/* Clear, plain-language onboarding/security explanations */}
+                    {isSignUp ? (
+                      <div className="auth-note-box">
+                        <strong>🔒 Private Local Storage:</strong> Creating an account saves your credentials straight to your own browser's storage cache. No cloud servers, no data leaks.
+                      </div>
+                    ) : (
+                      <div className="auth-note-box">
+                        <strong>💡 Quick Sign In:</strong> Enter your saved credentials to pull up your workflow board. You can also log in with the default profile using <code>student_dev</code> and password <code>admin</code>.
+                      </div>
+                    )}
+
                     {authError && <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#ef4444', padding: '10px', borderRadius: '6px', fontSize: '12px', marginBottom: '16px' }}>{authError}</div>}
                     <form onSubmit={handleAuthSubmit}>
                       <div style={{ marginBottom: '14px' }}>
@@ -563,12 +585,12 @@
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="hud-input" placeholder="••••••••" />
                       </div>
                       <button type="submit" className="hud-btn btn-primary" style={{ width: '100%', padding: '11px' }}>
-                        {isSignUp ? 'Create Account' : 'Authenticate Dashboard'}
+                        {isSignUp ? 'Create Local Profile' : 'Open Workspace'}
                       </button>
                     </form>
                     <div style={{ marginTop: '20px', textAlign: 'center' }}>
                       <button className="delete-btn" style={{ fontSize: '13px' }} onClick={() => { setIsSignUp(!isSignUp); setAuthError(''); }}>
-                        {isSignUp ? 'Already have an account? Sign in instead' : 'Need local credentials? Register an account'}
+                        {isSignUp ? 'Already have an account? Sign in instead' : 'Need a separate profile? Register an account'}
                       </button>
                     </div>
                   </div>
